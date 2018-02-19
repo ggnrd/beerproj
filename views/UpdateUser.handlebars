@@ -1,0 +1,29 @@
+  <img src="/images/Logo/ProjectBeer.png" style="width:10%">
+
+<h1>update a user</h1>
+
+<div style="width:40% ;margin:0 0  50px 550px;" align="center">
+
+    <form action="/UpdateUser" method="POST">
+        <span> NEW LastName:</span>
+        <input type="text" class="form-control" placeholder=" NEW Name" name="name" required autofocus>
+        <span> NEW LastName:</span>
+        <input type="text" class="form-control" placeholder=" NEW LastName" name="LastName" required>
+        <span> NEW Username:</span>
+        <input type="text" class="form-control" placeholder=" NEW Username" name="username" required>
+        <span> NEW Email:</span>
+        <input type="email" class="form-control" placeholder=" NEW Email" name="email" required>
+        <span> NEW Password:</span>
+        <input type="password" class="form-control" placeholder=" NEW Password" name="password" required>
+        <span> NEW Confirm Password:</span>
+        <input type="password" class="form-control" placeholder=" NEW Confirm Password" name="password1"
+            required>
+
+        <button class="btn btn btn-info btn-lg" type="submit">Update</button>
+    </form>
+   
+    <button class="btn btn btn-secondary btn-lg" type="submit"><a href="/users/admin/users">Back</a></button>
+
+
+   
+</div>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>The Beer Project</title>
+  <!-- CSS -->
+  <link href='/css/css.css' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Oswald:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Arvo:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- END CSS -->
+</head>
+
+
+
+
+
+
+
+<body>
+  <!-- MENU-->
+  <div class="container-nav fixed-top">
+
+    <ul class="nav justify-content-end">
+        <li role="presentation">
+        <a href="/">Home</a>
+      </li>
+      {{#if user}}
+      <li role="presentation">
+        <a href="/users/logout">Logout</a>
+      </li>
+      <li role="presentation">
+        {{!-- <a href="/users/Orders">Orders</a> --}}
+      </li>
+      {{else}}
+      <li class="nav-item">
+        <a class="nav-link" href="/users/login">login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/register">Register</a>
+      </li>
+      {{/if}}
+
+
+
+      <li class="nav-item">
+        <a class="nav-link fa fa-twitter fa-2x" aria-hidden="true" href="https://twitter.com/?lang=he"></a>
+
+      </li>
+      <li class="nav-item">
+        <a class="nav-link fa fa-instagram fa-2x" href="https://www.instagram.com/" aria-hidden="true"></a>
+
+      </li>
+      <li class="nav-item">
+        <a class="nav-link fa fa-facebook fa-2x" aria-hidden="true" href="https://www.facebook.com/"></a>
+
+      </li>
+      {{#if user}}
+      <li class="nav-item">
+        <a href="#">
+          <img src="/images/user-40.png" class="userpic">
+          <h5>
+            <b>Hello {{user.username}}</b>
+          </h5>
+        </a>
+      </li>
+      {{else}}
+      <li class="nav-item">
+        <a href="#">
+
+        </a>
+      </li>
+      {{/if}}
+    </ul>
+
+  </div>
+
+  <!--END MENU-->
+
+  
+  {{!-- <div class="row">
+    <div class="col-lg-12">
+      {{#if success_msg}}
+      <div class="alert alert-success">{{success_msg}}</div>
+      {{/if}} {{#if error_msg}}
+      <div class="alert alert-danger">{{error_msg}}</div>
+      {{/if}} {{#if error}}
+      <div class="alert alert-danger">{{error}}</div>
+      {{/if}} {{{body}}}
+    </div>
+
+
+  </div>  --}}
+
+  {{{body}}}
+
+
+  <!--footer-->
+  <footer class="footer1" id="footer">
+
+    <div class="container">
+
+      <div class="row">
+        <!-- row -->
+
+
+        <!-- widgets column left end -->
+
+
+        <div class="col-xs-3 col-md-4">
+          <!-- widgets column left -->
+
+          <ul class="list-unstyled clear-margins">
+            <!-- widgets -->
+
+            <li class="widget-container widget_nav_menu">
+              <!-- widgets list -->
+
+              <h1 class="title-widget">Useful links</h1>
+
+              <ul>
+                <li class="nav-item">
+                  <a class="nav-link active" href="/" id="Home">Home</a>
+                </li>
+
+                <li>
+                  <a href="/users/register">Register</a>
+                </li>
+                <li>
+                  <a href="/users/login">login</a>
+                </li>
+
+
+              </ul>
+
+            </li>
+
+          </ul>
+
+
+        </div>
+        <!-- widgets column left end -->
+
+
+
+        <div class="col-xs-3 col-md-4">
+          <!-- widgets column left -->
+
+          <ul class="list-unstyled clear-margins">
+            <!-- widgets -->
+
+            <li class="widget-container widget_nav_menu">
+              <!-- widgets list -->
+
+              <h1 class="title-widget">Join Our Blog!</h1>
+              <form class="BlogForm" id="id" name="footerblog" onsubmit="blogBTN()" action="/postEmail" method="post">
+                <input class="form-control" id="ex3" type="email" placeholder="Your Email" name="Email" required>
+                <button type="submit" value="submit" class="btn btn-warning btn-lg  blogBTN" aria-haspopup="true" aria-expanded="false" ng-click="orderinfo=0">
+                  Submit
+                </button>
+              </form>
+
+
+
+
+            </li>
+
+          </ul>
+
+
+        </div>
+        <!-- widgets column left end -->
+
+        <div class="col-xs-3 col-md-4">
+          <!-- widgets column center -->
+
+
+
+          <ul class="list-unstyled clear-margins">
+            <!-- widgets -->
+
+            <li class="widget-container widget_recent_news">
+              <!-- widgets list -->
+
+              <h1 class="title-widget">Contact </h1>
+
+              <div class="footerp">
+
+                <p>
+                  <span class="glyphicon glyphicon-envelope"></span>
+                  <b>Email id:</b>
+                  <a href="mailto:info@BEER.com">info@BEER.com</a>
+                </p>
+                <p>
+                  <span class="glyphicon glyphicon-map-marker"></span>
+                  <b>Corp Office / Postal Address</b> Kiryat Bialik, israel</p>
+                <p>
+                  <span class="glyphicon glyphicon-phone"></span>
+                  <b>Phone Numbers : </b>054748199995 </p>
+              </div>
+
+              <div class="social-icons">
+
+                <a href="https://www.instagram.com/">
+                  <i class="nav-link fa fa-instagram fa-2x" id="social"></i>
+                </a>
+                <a href="https://www.facebook.com/">
+                  <i class="fa fa-facebook fa-2x social-fb" id="social"></i>
+                </a>
+                <a href="https://twitter.com/">
+                  <i class="fa fa-twitter fa-2x social-tw" id="social"></i>
+                </a>
+
+                <a href="mailto:info@BEER.com">
+                  <i id="social" class="fa fa-envelope-o fa-2x" aria-hidden="true"></i>
+                </a>
+
+
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <!-- widgets column center -->
+
+
+          <!-- Add Google MAP -->
+
+          <iframe class="w3-round-large w3-greyscale" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d13409.294708049014!2d35.090679728588896!3d32.83668061363326!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xd4a8f1744a679e3d!2z16LXldek16gg15TXp9eo15nXldef!5e0!3m2!1siw!2sil!4v1508949427442"
+            width="1110" height="346" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+          <!-- END Add Google MAP -->
+
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- END footer-->
+
+  <!--© Made By IDan, All rights reserved-->
+  <div class="footer-bottom">
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+          <div class="copyright">
+
+            <p>© Made By IDan, All rights reserved</p> 
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </div>
+  <!--END  © Made By IDan, All rights reserved-->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+
+  <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+  
+  <script src="/js/main.js"></script>
+</body>
+
+</html>

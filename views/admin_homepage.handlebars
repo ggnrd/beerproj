@@ -1,0 +1,110 @@
+<body>
+  <img src="/images/Logo/ProjectBeer.png" style="width:10%">
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 80%;
+      text-align: center;
+      margin: 3%;
+    }
+
+    td,
+    th {
+      border: 1px solid #adaaaa;
+      text-align: center;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #999292;
+    }
+  </style>
+
+  <h3>Admin Home Page </h3>
+
+  <div class="row">
+    <div class="col">
+      <div class="table-container">
+        <h3>
+          <a href="Users"> Users</a>
+        </h3>
+        <table>
+          <tr>
+            <th>User Name</th>
+            <th>Frist Name</th>
+            <th>Password (hashed)</th>
+            <th>Email</th>
+            <th>Action</th>
+          </tr>
+
+          {{#each allUsers}}
+          <tr>
+            <td>{{this.username}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.password}}</td>
+            <td>{{this.email}}</td>
+            <td>
+              <form action="/deleteUser" method="POST">
+                <input type="hidden" name="id" value={{this._id.$oid}}>
+                
+
+                <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+              </form>
+            <form action="/PreeUpdateUser" method="POST">
+                <input type="hidden" name="id" value={{this._id.$oid}}>
+                <button class="btn btn-sm" type="submit">Update</button>    
+              </form>
+            </td>
+          </tr>
+          {{/each}}
+
+        </table>
+
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="table-container">
+        <h3>
+          <a href="Blogs">Blogs</a>
+        </h3>
+
+        <table>
+          <tr>
+            <th>Email</th>
+            <th>Date</th>
+            <th>Action</th>
+
+          </tr>
+          {{#each allBlogs}}
+          <tr>
+
+            <td>{{this.email}}</td>
+            <td>{{this.date}}</td>
+            <td>
+
+
+              <form action="/deleteBlog" method="POST">
+                <input type="hidden" name="id" value={{this._id.$oid}}>
+                <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+              </form>&nbsp&nbsp
+              <form action="/PreeUpdateBlog" method="POST">
+                <input type="hidden" name="id" value={{this._id.$oid}}>
+                <input type="hidden" name="date" value={{this.date}}>
+
+                <button class="btn btn-sm" type="submit">Update</button>    
+              </form>
+
+            </td>
+
+          </tr>
+          {{/each}}
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+</body>
