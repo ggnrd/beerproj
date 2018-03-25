@@ -9,7 +9,7 @@ var MLab = require('mlab-data-api');
 
 // initialize  the Mlab API
 var mLab=MLab({
-  key: 'FSD12Os5JMYvZfLLO24Q73Zo9FhYDVBG',
+  key: mongo.mlabKey,
   host:'https://api.mlab.com', //optional 
   uri : '/api',//optional 
   version :'1',//optional 
@@ -117,7 +117,7 @@ passport.use(new LocalStrategy(
    		if(err) throw err;
    		if(isMatch){
 				
-			 if (user.username=="admin") {// all most a complite admin validation
+			 if (user.username==admin.admin) {// all most a complite admin validation
 					 console.log("this is an admin");
 					 return done(null, user);
 				}

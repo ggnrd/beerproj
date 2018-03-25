@@ -21,7 +21,7 @@ router.get('/', function (req, res) {
 
 // initialize  the Mlab API
 var mLab = MLab({
-	key: 'FSD12Os5JMYvZfLLO24Q73Zo9FhYDVBG',
+	key: mongo.mlabKey,
 	host: 'https://api.mlab.com', //optional 
 	uri: '/api',//optional 
 	version: '1',//optional 
@@ -121,14 +121,14 @@ router.post('/postEmail', function (req, res) {
 		let transporter = nodemailer.createTransport({
 			service: 'Gmail',
 			auth: {
-				user: 'beerkitner@gmail.com', // generated  user
-				pass: 'beerkitner123' // generated  password
+				user: email.accountUSER, // generated  user
+				pass: email.accountPASS // generated  password
 			}
 		});
 	
 		// setup email data with unicode symbols
 		let mailOptions = {
-			from: '"Beer Project" <beerkitner@gmail.com>', // sender address
+			from: '"Beer Project" <'+email.accountUSER+'>', // sender address
 			to: Email, // list of receivers
 			subject: 'Beer Blog ✔', // Subject line
 			text: 'thanks for joinning our Beer Blog?', // plain text body

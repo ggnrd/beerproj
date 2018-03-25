@@ -14,7 +14,7 @@ var mongoose = require('mongoose');
 
 
 // connect to the data base on the Mlab site that provide a free data base servers
-mongoose.connect('mongodb://admin:admin@ds121088.mlab.com:21088/beer', { useMongoClient: true }, function (err) {
+mongoose.connect(mongo.connect, { useMongoClient: true }, function (err) {
   if (err) {
     console.log('Some problem with the connection ' + err);
   } else {
@@ -93,7 +93,7 @@ app.use('/', routes);
 app.use('/users', users);
 
 // Set Port
-app.set('port', (process.env.PORT || 3000));//chacnge to port 3000
+app.set('port', (process.env.PORT || 3000));
  app.listen(app.get('port'), function () {
   console.log('Server started on port ' + app.get('port'));
 });
