@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 var MLab = require('mlab-data-api');
+var nodemailer = require('nodemailer');
 
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -87,7 +88,6 @@ router.get('/admin', function (req, res) {
 
 
 router.post('/postEmail', function (req, res) {
-	// res.render('this should send to db ');
 
 
 	// Register User/ http://localhost:3000/user/register   send to DB 
@@ -116,7 +116,38 @@ router.post('/postEmail', function (req, res) {
 		// need yo show a massege 
 		res.redirect('/');
 	}
+	
+	nodemailer.createTestAccount((err, account) => {
+		let transporter = nodemailer.createTransport({
+			service: 'Gmail',
+			auth: {
+				user: 'beerkitner@gmail.com', // generated  user
+				pass: 'beerkitner123' // generated  password
+			}
+		});
+	
+		// setup email data with unicode symbols
+		let mailOptions = {
+			from: '"Beer Project" <beerkitner@gmail.com>', // sender address
+			to: Email, // list of receivers
+			subject: 'Beer Blog ✔', // Subject line
+			text: 'thanks for joinning our Beer Blog?', // plain text body
+			html: '<h1>this is the BEER Blog !!!</h1>' // html body
+		};
+	
+		// send mail with defined transport object
+		  transporter.sendMail(mailOptions, function(error, info){
+			if (error) {
+			  console.log(error);
+			} else {
+			  console.log('Email sent: ' + info.response);
+			  console.log('Email address: ' + mailOptions.to);
 
+			}
+		   });
+	
+	});
+		
 
 });
 
@@ -257,7 +288,6 @@ router.post('/deleteBlog', function (req, res) {
 		.catch(function (error) {
 			console.log('error', error)
 		});
-	//   console.log("options ==> ",options);
 
 });
 

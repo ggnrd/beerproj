@@ -10,7 +10,8 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
-// var angular = require('angular');
+
+
 
 // connect to the data base on the Mlab site that provide a free data base servers
 mongoose.connect('mongodb://admin:admin@ds121088.mlab.com:21088/beer', { useMongoClient: true }, function (err) {

@@ -75,8 +75,9 @@ var app = angular.module("myApp", ["ngRoute"]);
 
 app.controller('formCtrl', ['$scope', function ($scope) {
     
-    $scope.orderForm = {};
+    $scope.orderForm = [];
 
+  
 }]);
 
 
