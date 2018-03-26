@@ -11,10 +11,10 @@ var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
 
-
+require('dotenv').config()
 
 // connect to the data base on the Mlab site that provide a free data base servers
-mongoose.connect(mongo.connect, { useMongoClient: true }, function (err) {
+mongoose.connect(process.env.mongo_connect, { useMongoClient: true }, function (err) {
   if (err) {
     console.log('Some problem with the connection ' + err);
   } else {
@@ -93,7 +93,7 @@ app.use('/', routes);
 app.use('/users', users);
 
 // Set Port
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 3000));//chacnge to port 3000
  app.listen(app.get('port'), function () {
   console.log('Server started on port ' + app.get('port'));
 });

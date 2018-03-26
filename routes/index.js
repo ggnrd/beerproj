@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var dotenv =require('dotenv').config();
+
 var bodyParser = require('body-parser');
 var MLab = require('mlab-data-api');
 var nodemailer = require('nodemailer');
-
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -15,13 +16,13 @@ var User = require('../models/user');
 
 // Get Homepage
 // http://localhost:3000/
-router.get('/', function (req, res) {
+router.get('/', function (req, res) {	 
 	res.render('index');
 });
 
 // initialize  the Mlab API
 var mLab = MLab({
-	key: mongo.mlabKey,
+	key: process.env.mongo_mlabKey,
 	host: 'https://api.mlab.com', //optional 
 	uri: '/api',//optional 
 	version: '1',//optional 
@@ -121,14 +122,14 @@ router.post('/postEmail', function (req, res) {
 		let transporter = nodemailer.createTransport({
 			service: 'Gmail',
 			auth: {
-				user: email.accountUSER, // generated  user
-				pass: email.accountPASS // generated  password
+				user: process.env.email_USER, // generated  user
+				pass: process.env.email_Pass // generated  password
 			}
 		});
 	
 		// setup email data with unicode symbols
 		let mailOptions = {
-			from: '"Beer Project" <'+email.accountUSER+'>', // sender address
+			from: '"Beer Project" <'+process.env.email_USER+'>', // sender address
 			to: Email, // list of receivers
 			subject: 'Beer Blog ✔', // Subject line
 			text: 'thanks for joinning our Beer Blog?', // plain text body
