@@ -28,7 +28,7 @@ router.get('/register', function (req, res) {
 router.get('/login', function (req, res) {
   res.render('login');
 });
-// enter to admin portal // http://localhost:3000/user/admin/hompage - need to make only Logged in admin can get into this URL
+// enter to admin portal // http://localhost:3000/users/admin/hompage - need to make only Logged in admin can get into this URL
 router.get('/admin/hompage', function (req, res) {
       /// use sessioin to make sure only admin can get to this URL
       if (req.session.passport == undefined) {
