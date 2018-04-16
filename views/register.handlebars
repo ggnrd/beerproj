@@ -1,0 +1,62 @@
+<div style="background-image: url(/images/Stout.jpg); background-repeat: no-repeat;background-size: 100%; height: 925px; ">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-md-4 col-md-offset-4">
+
+        <div class="account-wall">
+          <div>{{#if errors}} {{#each errors}}
+            <div class="alert alert-danger">{{msg}}</div>
+            {{/each}} {{/if}}</div>
+          <h1 class="text-center login-title">Register</h1>
+          <img class="profile-img" src="/images/user.bmp" alt="">
+          <form class="form-signin" method="post" action="/users/register">
+
+
+            <input type="text" class="form-control" placeholder="Name" name="name" required autofocus>
+            <input type="text" class="form-control" placeholder="LastName" name="LastName" required>
+            <input type="text" class="form-control" placeholder="Username" name= "username"required>
+            <input type="email" class="form-control" placeholder="Email" name="email" required>
+            <input type="password" class="form-control" placeholder="Password" name="password" required>
+            <input type="password" class="form-control" placeholder="Confirm Password" name="password1" required>
+            <div>not a robot will come here</div>
+
+
+
+            <div class="popup" onclick="SingUpPop()">
+              <button class="btn btn-lg btn-primary btn-block" type="submit">
+                Register</button>
+              {{!--
+              <span class="popuptext" id="myPopup">this feture is under development</span> --}}
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{!-- <form method="post" action="/users/register"> --}}
+
+  {{!--
+  <div class="form-group">
+    <label>Name</label>
+    <input type="text" class="form-control" placeholder="Name" name="name">
+  </div>
+  <div class="form-group">
+    <label>Username</label>
+    <input type="text" class="form-control" placeholder="Username" name="username">
+  </div>
+  <div class="form-group">
+    <label>Email</label>
+    <input type="email" class="form-control" placeholder="Email" name="email">
+  </div>
+  <div class="form-group">
+    <label>Password</label>
+    <input type="password" class="form-control" placeholder="Password" name="password">
+  </div>
+  <div class="form-group">
+    <label>Confirm Password</label>
+    <input type="password" class="form-control" placeholder="Password" name="password2">
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button> --}}
+</form>

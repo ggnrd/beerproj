@@ -1,0 +1,620 @@
+<div id="myModal" class="modal">
+	<!-- pop up  content -->
+	<div class="modal-content">
+		<span class="close">&times;</span>
+
+		<div id="Emailaddress" ng-show="!orderinfo"></div>
+		your order was sucssfuly sent
+		<div ng-show="orderinfo">
+
+			<h1>this is your order!</h1>
+			<p>
+				<span ng-bind="orderform.options"></span>
+				of
+				<span ng-bind="orderform.matireal"></span>
+
+				beer in
+				<span ng-bind="orderform.pakege"></span>
+				with
+				<span ng-bind="orderform.alco"></span>
+				of Alcohol
+			</p>
+			<ul>
+				<li>
+
+
+					<u>Filter=</u> &nbsp&nbsp&nbsp
+					<span ng-bind="orderform.Filter"></span>
+				</li>
+				<li>
+					<u>Special=</u>&nbsp&nbsp&nbsp
+					<span ng-bind="orderform.Spices"></span>
+				</li>
+				<li>
+					<u>Your Comment=</u>&nbsp&nbsp&nbsp
+					<span ng-bind="orderform.textarea"></span>
+				</li>
+
+			</ul>
+
+
+
+			<h1>card details</h1>
+			<p>
+				<u>Frist Name :</u> &nbsp&nbsp&nbsp
+				<span ng-bind="orderform.Fname"></span>
+
+				<u> Last Name:</u>&nbsp&nbsp&nbsp
+				<span ng-bind="orderform.Lname"></span>
+
+				<br>
+				<u>Email:</u> &nbsp&nbsp&nbsp
+				<span ng-bind="orderform.Email"></span>
+
+				<u> Address</u>:&nbsp&nbsp&nbsp
+				<span ng-bind="orderform.Address"></span>
+
+				<u>City:</u>&nbsp&nbsp&nbsp
+				<span ng-bind="orderform.City"></span>
+
+				<br>
+				<u> Zip:</u> &nbsp&nbsp&nbsp
+				<span ng-bind="orderform.ZipCode"></span>
+
+				<u> Card Number:</u> &nbsp&nbsp&nbsp
+				<span ng-bind="orderform.cardNumber"></span>
+
+				<br>
+				<u> EXP:</u> &nbsp&nbsp&nbsp
+				<span ng-bind="orderform.cardExpiry"></span>
+
+				<u> Card CVC:</u>&nbsp&nbsp&nbsp
+				<span ng-bind="orderform.CVC"></span>
+
+			</p>
+
+		</div>
+
+	</div>
+
+</div>
+
+<!-- slideshow-->
+<div class="simple-ss" id="simple-ss">
+
+	<div class="Slogen">
+
+
+		<div class="LOGO">
+			<a href="/">
+				<img src="/images/Logo/ProjectBeer.png">
+			</a>
+		</div>
+
+		<div class="heading">
+			<span>
+				<h1>Keep
+					<br>calm and
+					<br>drink custom
+					<br> beer.</h1>
+				<p>75% of people are drinking supermarkets beer..
+					<br>dont be like them and
+					<a href="#">dont drink boring beer!</a>
+				</p>
+			</span>
+		</div>
+
+	</div>
+	<!--NICE CLOSE TO THE SLIDE SHOW-->
+	<div class="NiceCloseToTheSlideShow">
+		<span class="glyphicon glyphicon-chevron-down gi-3x"></span>
+
+		<img src="https://bigcartel-site.imgix.net/images/home/video-texture-3fefe993.png?auto=format">
+	</div>
+	<!--END  NICE CLOSE TO THE SLIDE SHOW-->
+
+</div>
+
+<!--END slideshow-->
+
+
+
+<!--WHO ARE WE DIV-->
+
+<div class="masage" id="masage">
+
+	<h1>Who Are WE !</h1>
+	<p>As a member-based organization, Craft Ontario offers many benefits and service to its members. Craftspeople are eligible
+		to apply to the Craft Awards program, to our retail shop, as well as to juried exhibitions. Members also receive discounted
+		rates on Craft Ontario workshops, seminars, and conferences as well as complimentary admission to various galleries throughout
+		Ontario. In addition to these discounts, members pay a reduced rate to advertise in our publications and on purchases at
+		our Craft Ontario Shop. </p>
+	<p>Members also receive regular communications and invitations, including a monthly copy of our e-newsletter Craftfl@sh and
+		two issues of Studio Magazine per year. Overall, Craft Ontario works to provide opportunities for craftspeople that range
+		from addressing business needs to providing promotional space in the arts and culture community. These services are crucial
+		to craftspeople across the province, and Craft Ontario is committed to maintaining and developing this unique role.</p>
+</div>
+<!--WHO ARE WE DIV-->
+
+
+<!--JOIN OUR BLOG DIV-->
+
+<div class="Blog" id="Blog">
+	<span>
+		<h1>For Exclusive Recipes Join Our Blog !</h1>
+
+		<div class="col-xs-4">
+			<form class="BlogForm" id="blogemail" name="blogemail" onsubmit="blogBTN()" action="/postEmail" method="post">
+				<input class="form-control" id="ex3" type="email" placeholder="Your Email" name="Email" required>
+				<button type="submit" value="submit" class="btn btn-warning btn-lg  blogBTN" aria-haspopup="true" aria-expanded="false" ng-click="orderinfo=0">
+					Submit
+				</button>
+			</form>
+		</div>
+
+	</span>
+</div>
+<!--END JOIN OUR BLOG DIV-->
+
+
+
+
+
+<!--Beer info-->
+<!--beermoveleft + beermoveright are the divs that are moving left and right when you click on them
+	  beermoveleft + beermoveright are the div with the BEER IMG -->
+
+
+<div class="beerinfo" id="beerinfo">
+
+
+	<div class="beer-wrapper-box">
+		<div class="text">
+
+			<h1> orem Ipsum is simply dummy </h1>
+			<p>text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+				1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not
+				only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised
+				in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
+				software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+		</div>
+
+		<div class="beermoveleft" id="onebeer">
+			<h1>What is a pilsner</h1>
+			<div class="beericon1" style="background-image: url('/images/pilsner.jpg');"></div>
+		</div>
+
+
+	</div>
+	<div class="beer-wrapper-box">
+		<div class="text">
+
+			<h1> orem Ipsum is simply dummy </h1>
+			<p>text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+				1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not
+				only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised
+				in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
+				software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+		</div>
+
+		<div class="beermoveright" id="twoebeer">
+			<h1>What is a stout</h1>
+			<div class="beericon2" style="background-image: url('/images/Stoutbeer.jpg');"></div>
+		</div>
+
+
+	</div>
+	<div class="beer-wrapper-box">
+		<div class="text">
+
+			<h1> orem Ipsum is simply dummy </h1>
+			<p>text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+				1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not
+				only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised
+				in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
+				software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+		</div>
+
+		<div class="beermoveleft" id="threebeer">
+			<h1>What isa ale</h1>
+			<div class="beericon1" style="background-image: url('/images/ale.jpg');"></div>
+
+		</div>
+
+
+	</div>
+	<div class="beer-wrapper-box">
+		<div class="text">
+
+			<h1> orem Ipsum is simply dummy </h1>
+			<p>text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+				1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not
+				only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised
+				in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
+				software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+		</div>
+
+		<div class="beermoveright" id="forthbeer">
+			<h1>What is a wheat</h1>
+			<div class="beericon2" style="background-image: url('/images/wheat.jpg');"></div>
+		</div>
+
+
+	</div>
+
+
+
+
+
+</div>
+
+
+<!-- END Beer info-->
+
+
+<!--ORder div-->
+<div id="MakeAnOrder1" ng-controller="formCtrl">
+	<div class="MakeAnOrder card text-center">
+		<h1>Choose your crafted beer</h1>
+
+		<div class="beer1" ng-click="openorder =1" ng-model="clearcheckbox" style="cursor:pointer"></div>
+		<div class="beer2" ng-click="openorder =1" style="cursor:pointer"></div>
+		<div class="beer3" ng-click="openorder =1" style="cursor:pointer"></div>
+		<div class="beer4" ng-click="openorder =1" style="cursor:pointer"> </div>
+
+
+		<!-- orderdiv -->
+		<div class="ng-viewdiv" ng-show="openorder">
+
+			<div class="card-header">
+				<div class="CloseOrderV">
+					<div>
+						<a href="#!empty">
+							<i class="fa fa-times fa-3x" aria-hidden="true" ng-click="openorder=0"></i>
+
+						</a>
+					</div>
+
+				</div>
+				<h2>Select Your</h2>
+				<h1>PILSNER Beer!!</h1>
+			</div>
+
+
+			<!--ORder div-->
+
+			<a href="#!">
+				<div class="beer1" style="height: 20px;">
+				</div>
+			</a>
+
+
+			<!--ORder div-->
+
+			<div class="card-body">
+
+				<form class="card-title" name="orderForm" novalidate>
+					<div style="margin: 30px;">
+
+						<div class="row">
+							<div class="col-4">
+
+								<div>
+									<label class="btn btn-primary">
+										<input type="radio" value="5L" name="group2" required ng-model="orderform.liter"> 5L
+									</label>
+									<label class="btn btn-primary">
+										<input type="radio" value="10L" name="group2" required ng-model="orderform.liter"> 10L
+									</label>
+									<label class="btn btn-primary">
+										<input type="radio" value="20L" name="group2" required ng-model="orderform.liter"> 20L
+									</label>
+								</div>
+
+							</div>
+
+							<!-- empty space -->
+							<div class="col-4">
+							</div>
+							<!-- End empty space -->
+
+							<div class="col-4">
+
+								<div>
+									<div class="btn-group btn-lg">
+										<label class="btn btn-primary">
+											<input type="radio" value="keg" name="group1" required ng-model="orderform.pakege"> keg
+											<img src="https://png.icons8.com/wooden-beer-keg/win10/54/000000" style="width:25px">
+										</label>
+										<label class="btn btn-primary">
+											<input type="radio" value="bottles" name="group1" required ng-model="orderform.pakege"> bottles
+											<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAA2CAYAAACMRWrdAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKNSURBVGhD7dpLqI1RHIbx415KEkoxUQphwpCByKXEQEphIANJSYmkTIiOiTAzYsKAkSK3DNwmxERCiWIgRVFC7p53sGu1es/Z6+zv7NZatZ/6TTir/qtz9v7W/vbX18WW4zn+Gd9xDpNQVXOg4d2mQpdQVf1wG3GmoZrOw23CWYxqOg23CWc+qmkydmN/G+vQq5RWYXsb01Fdd+BeU6ENqK6XcJsJ6XVYXd/gNhPS9a6qJsJtJHYWVTUbbiOxm6iqZXAbiT1FVW2G20jsI6pqL9xGnHGoorG4BbcJZz2KbxT0GcttYCA/sAZFdwpu+Ha+YgGKbBvc0KleYyqKahZSThrtXERRXYEbtBMrUESL4Abs1F0U0Qm4AZuYiezpWOSGa0IfQrP3BW64Jo4ie7oGueGaKOJz2ju44UI6XbzFh+DfBnMA2XsBN5zoz3QXJqDVPFyG+/mWncjeA7jhfmEpXCOgi7FbJ1vQq9cQ24NXkXtIaSXitTIF2dO9wfg1chUp6fAcr/0Dfa7L3kbEwx1HSiPxG+Ha9ygiffoNB5NDSO0TwrX6UywivaWHg4lu5qT2BuHaJyiiJQgHk31IrdiN6euicDA5jNQ+I1z7DEW0FuFgchIp6d3vL8K1+g0W0SaEg8kNpKTHJuK1OigXkX5jjyKp1zHd44/X3kavbjYeenQopu/IBmsM3DrRhTt7ZxC/TkRvCgM97qA3jWtw62Qhsncdbjj5CZ1CZkCNhi7o9+F+vmU1svcYbriY7o3ogOv+L7YV2YtPDsNhKEeyrhUfYofDQWSvG/cVi7j9pltrbrgmjiF7D+GGa0JfzmdPx6KUx2RT6VKgy0IRzcURXIDuF3ZCT+nsgL6cb1hf339ksZ0syEx8aQAAAABJRU5ErkJggg=="
+											 style="width:25px">
+										</label>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+
+
+
+
+					</div>
+
+					<div class="row">
+						<div class="col-4">
+
+
+							<div style="margin: 10px;">
+
+								<div>
+									<label class="btn btn-primary">
+										<input type="radio" value="Yeast" name="group8" required ng-model="orderform.matireal"> Yeast
+									</label>
+									<label class="btn btn-primary">
+										<input type="radio" value="wheat" name="group8" required ng-model="orderform.matireal"> wheat
+									</label>
+									<label class="btn btn-primary">
+										<input type="radio" value="Hops" name="group8" required ng-model="orderform.matireal"> Hops
+									</label>
+									<label class="btn btn-primary">
+										<input type="radio" value="Malt" name="group8" required ng-model="orderform.matireal"> Malt
+									</label>
+								</div>
+
+
+
+							</div>
+						</div>
+						<div class="col-4">
+							<div style="margin: 10px;">
+								<span>Filter : </span>
+								<div>
+									<label class="btn btn-primary">
+										<input type="radio" value="None" name="group3" required ng-model="orderform.Filter"> None
+									</label>
+									<label class="btn btn-primary">
+										<input type="radio" value="Light" name="group3" required ng-model="orderform.Filter"> Light
+									</label>
+									<label class="btn btn-primary">
+										<input type="radio" value="Massive" name="group3" required ng-model="orderform.Filter"> Massive
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-4">
+
+							<div style="margin: 10px;">
+								<span>Alcohol : </span>
+
+								<div>
+									<label class="btn btn-primary">
+										<input type="radio" value="3%" name="group4" required ng-model="orderform.alco"> 3%
+									</label>
+									<label class="btn btn-primary">
+										<input type="radio" value="5%" name="group4" required ng-model="orderform.alco"> 5%
+									</label>
+									<label class="btn btn-primary">
+										<input type="radio" value="8%" name="group4" required ng-model="orderform.alco"> 8%
+									</label>
+									<label class="btn btn-primary">
+										<input type="radio" value="10%" name="group4" required ng-model="orderform.alco"> 10%
+									</label>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<div style="margin: 10px;">
+						<span>Flavoring & Spices : </span>
+						<div>
+							<label class="btn btn-primary">
+								<input type="radio" value="Sweet Orange Peel" name="group5" required ng-model="orderform.Spices"> Sweet Orange Peel
+							</label>
+							<label class="btn btn-primary">
+								<input type="radio" value="Cacao Nibs" name="group5" required ng-model="orderform.Spices"> Cacao Nibs
+							</label>
+							<label class="btn btn-primary">
+								<input type="radio" value="Wood Grind" name="group5" required ng-model="orderform.Spices"> Wood Grind
+							</label>
+
+						</div>
+					</div>
+
+
+					<div class="row">
+						<div class="col-4">
+						</div>
+						<div class="col-4">
+							<div class="form-group">
+								<label for="comment">Special Request:</label>
+								<textarea class="form-control" ng-model="orderform.textarea" rows="5" id="Special Request:"></textarea>
+							</div>
+
+						</div>
+						<div class="col-4">
+
+						</div>
+
+					</div>
+					<div class="card-footer text-muted">
+
+
+						<div>
+							<a href="#!CheckOut">
+								<button type="button" id="ToCheckOut" ng-disabled="orderform.$invalid" class="btn btn-warning btn-lg" ng-click="openorder1=1;openorder=0;requiredBTN=0">Check Out
+									<i class="fa fa-arrow-right" aria-hidden="true"></i>
+								</button>
+							</a>
+
+						</div>
+				</form>
+
+
+				</div>
+			</div>
+		</div>
+
+
+		<!-- CHECKOUT -->
+
+		<div class="ng-viewdiv" ng-show="openorder1">
+
+
+			<div class="card-header">
+				<div class="CloseOrderV">
+					<div>
+						<a href="#!empty">
+							<i class="fa fa-times fa-3x" aria-hidden="true" ng-click="openorder1=0"></i>
+
+						</a>
+					</div>
+
+				</div>
+				<h1>Check Out</h1>
+			</div>
+			<div class="card-body">
+
+				<form class="card-title">
+					<form>
+						<form>
+							<form>
+								<div class="form-row">
+									<div class="col">
+										<span>Frist Name</span>
+										<input type="text" class="form-control" required placeholder="Frist Name" ng-model="orderform.Fname">
+									</div>
+									<div class="col">
+										<span>Last Name</span>
+
+										<input type="text" class="form-control" required placeholder="Last Name" ng-model="orderform.Lname">
+									</div>
+									<div class="col">
+										<span>Email</span>
+
+										<input type="text" class="form-control" required placeholder="Email" ng-model="orderform.Email">
+									</div>
+								</div>
+							</form>
+							<div class="form-group">
+								<label for="inputAddress" class="col-form-label"></label>
+								<input type="text" class="form-control" id="inputAddress" required placeholder="Address-1234 Main St" ng-model="orderform.Address">
+							</div>
+
+
+							<div class="form-row">
+								<div class="col-7">
+									<span>City</span>
+
+									<input type="text" class="form-control" required placeholder="City" ng-model="orderform.City">
+								</div>
+								<div class="col">
+									<span>State</span>
+
+									<input type="text" class="form-control" required placeholder="State" ng-model="orderform.State">
+								</div>
+								<div class="col">
+									<span>Zip </span>
+
+									<input type="text" class="form-control" required placeholder="Zip Code" ng-model="orderform.ZipCode">
+								</div>
+							</div>
+
+
+						</form>
+					</form>
+				</form>
+			</div>
+
+
+			<div class="container">
+				<div class="row">
+
+					<div>
+
+
+						<!-- CREDIT CARD FORM STARTS HERE -->
+						<div class="panel panel-default credit-card-box">
+							<div class="panel-heading display-table">
+								<div class="row display-tr">
+									<div class="display-td">
+										<img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
+									</div>
+								</div>
+							</div>
+							<div class="panel-body">
+								<form role="form" id="payment-form" ng-submit="doSignUp()">
+									<div class="row">
+										<div class="col-xs-12">
+											<div class="form-group">
+												<label for="cardNumber">CARD NUMBER</label>
+												<div class="input-group">
+													<input type="text" class="form-control" name="cardNumber" placeholder="Valid Card Number" autocomplete="cc-number" required
+													 ng-model="orderform.cardNumber" autofocus />
+													<span class="input-group-addon">
+														<i class="fa fa-credit-card"></i>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-7 col-md-7">
+											<div class="form-group">
+												<label for="cardExpiry">
+													<span class="hidden-xs">EXPIRATION</span>
+													<span class="visible-xs-inline">EXP</span> DATE</label>
+												<input type="tel" class="form-control" name="cardExpiry" placeholder="MM / YY" autocomplete="cc-exp" required ng-model="orderform.cardExpiry"
+												/>
+											</div>
+										</div>
+										<div class="col-xs-5 col-md-5 pull-right">
+											<div class="form-group">
+												<label for="cardCVC">CV CODE</label>
+												<input type="number" class="form-control" name="cardCVC" placeholder="CVC" autocomplete="cc-csc" required ng-model="CVC" />
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-12">
+											<div class="form-group">
+												<label for="couponCode">COUPON CODE</label>
+												<input type="text" class="form-control" name="couponCode" ng-model="orderform.couponCode" />
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-12">
+											<button class="btn btn-success btn-lg btn-block" type="submit" value="submit" id="pay" ng-click="orderinfo=1;modelshow=1">CHECK OUT</button>
+										</div>
+									</div>
+									<div class="row" style="display:none;">
+										<div class="col-xs-12">
+											<p class="payment-errors"></p>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						<!-- CREDIT CARD FORM ENDS HERE -->
+
+
+					</div>
+
+
+
+				</div>
+			</div>
+
+		</div>
+
+		<!--END CHECKOUT -->
+
+	</div>
+
+</div>
+<!--END order div-->
