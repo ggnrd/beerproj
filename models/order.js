@@ -31,7 +31,7 @@ var OrderSchema = mongoose.Schema({
   Lname: {
     type: String
   },
-  Email: {
+  email: {
     type: String
   },
   Address: {
@@ -75,12 +75,12 @@ module.exports.createOrder = function(newOrder, callback){
     bcrypt.genSalt(10, function(err, salt) {
 	    bcrypt.hash(newOrder.cardNumber, salt, function(err, hash) {
             newOrder.cardNumber = hash;
-            console.log("newOrder.cardNumber   ==>   ",newOrder.cardNumber);
+            // console.log("newOrder  ==>   ",newOrder);
 	        newOrder.save(callback);
 	    });
     });
 
-	newOrder.save(newOrder);
+    newOrder.save(newOrder);
 }
 
 

@@ -16,13 +16,6 @@ var blog = require('../models/blog');
 var User = require('../models/user');
 var order = require('../models/order');
 
-/////// this has the Index + Blog + Order!   /////////
-
-
-
-
-
-
 // Get Homepage
 // http://localhost:3000/
 router.get('/', function (req, res) {
@@ -41,61 +34,87 @@ var mLab = MLab({
 ///////////////////////////
 
 
-////////////////gets all blogs!
-router.get('/users/admin/blogs', function (req, res) {
+////////////////gets all info from DB!
+router.get('/users/admin/hompage', function (req, res) {
+  var backPage = '/admin';
+  if (req.session.passport == undefined) {
+    req.flash('error', 'you Are NOT logged in ');
+    return res.redirect('/admin');
+  }
 
+  if (req.session.passport.user != process.env.admin_KEY_USER) {
+    req.flash('error', 'you are not allowed because you are not an admin');
+    return res.redirect('/admin');
+  }
+  var blogs;
+  var users;
+  var orders;
+  
+//get all blogs to the var blogs
   var options = {
     database: 'beer', //optional 
     collection: 'blogs'
   };
-
+ 
   mLab.listDocuments(options)
     .then(function (response) {
-      //   console.log('blogs === >',response.data) full blogs arry
-      res.render('admin_homepage', {
-        allBlogs: response.data
-
-      });
+        blogs = response.data;
     })
     .catch(function (error) {
       console.log('error', error)
     });
-  ////////////// done
 
 
-});
-
-
-
-router.get('/users/admin/users', function (req, res) {
-
-  ////////////////gets all users!
+//get all users to the var users
 
   var options = {
     database: 'beer',
     collection: 'users'
   };
-
   mLab.listDocuments(options)
     .then(function (response) {
-      //   console.log('users === >',response.data)    full users arry
-      res.render('admin_homepage', {
-        allUsers: response.data
-      });
+      users = response.data;
     })
     .catch(function (error) {
       console.log('error', error)
     });
 
+
+  //get all orders to the var orders
+
+  var options = {
+    database: 'beer',
+    collection: 'orders'
+  };
+
+  mLab.listDocuments(options)
+    .then(function (response) {
+      orders = response.data  })
+
+    .catch(function (error) {
+      console.log('error', error)
+    });
+
+    // rander and send it to the HTML
+
+  setTimeout(function () {
+    res.render('admin_homepage', {
+      allBlogs: blogs,
+      allUsers: users,
+      allOrders: orders
+    });
+
+  }, 3000);
+
+  ////////////// done
+
 });
-
-
 
 // http://localhost:3000/admin
 router.get('/admin', function (req, res) {
+  
   res.render('admin');
 });
-
 
 router.post('/postEmail', function (req, res) {
 
@@ -167,13 +186,18 @@ router.post('/deleteUser', function (req, res) {
     collection: 'users',
     id: req.body.id
   };
-  mLab.deleteDocument(options)
-    .then(function (response) {
-      res.redirect('/users/admin/users');
-    })
-    .catch(function (error) {
-      console.log('error', error)
-    });
+  if (options.id != process.env.admin_KEY_USER) {
+    mLab.deleteDocument(options)
+      .then(function (response) {
+        res.redirect('/users/admin/users');
+      })
+      .catch(function (error) {
+        console.log('error', error)
+      });
+  }
+  req.flash('error', 'cant Delete this User ');
+  return res.redirect('/users/admin/users');
+
 });
 
 
@@ -181,6 +205,10 @@ var userId = "";
 
 ////////// get to the page to enter the ner detail
 router.post('/PreeUpdateUser', function (req, res) {
+  if (req.body.id == process.env.admin_KEY_USER) {
+    req.flash('error', 'cant Update this User ');
+    res.redirect('/users/admin/hompage');
+  }
   userId = req.body.id;
   res.render('UpdateUser');
 
@@ -228,7 +256,7 @@ router.post('/UpdateUser', function (req, res) {
   setTimeout(function () {
     mLab.updateDocument(options)
       .then(function (response) {
-        res.redirect('/users/admin/users');
+        res.redirect('/users/admin/hompage');
 
       })
       .catch(function (error) {
@@ -244,8 +272,8 @@ var BlogId = "";
 ////////// get to the page to enter the ner detail
 router.post('/PreeUpdateBlog', function (req, res) {
   BlogId = req.body.id;
-//   BlogDate = new Date();
-//   BlogDate.toString(BlogDate);
+  //   BlogDate = new Date();
+  //   BlogDate.toString(BlogDate);
 
   res.render('UpdateBlog');
 
@@ -256,7 +284,7 @@ router.post('/UpdateBlog', function (req, res) {
 
   var email = req.body.email;
   var BlogDate = new Date();
-  console.log("BlogDate ==> ",BlogDate);
+  console.log("BlogDate ==> ", BlogDate);
 
   // Validation
   req.checkBody('email', 'Email is required').notEmpty();
@@ -308,12 +336,6 @@ router.post('/deleteBlog', function (req, res) {
 
 });
 
-
-
-
-
-
-
 ////////    Order 
 router.post('/accounts', function (req, res) {
   console.log(req.body);
@@ -330,7 +352,7 @@ router.post('/accounts', function (req, res) {
 
   var orderDate = new Date();
   var newOrder = new order({
-    Email: req.body.order.Email,
+    email: req.body.order.Email,
     liter: req.body.order.liter,
     matireal: req.body.order.matireal,
     Filter: req.body.order.Filter,
@@ -350,6 +372,8 @@ router.post('/accounts', function (req, res) {
     CVC: req.body.order.cardCVC,
     Date: orderDate
   });
+
+  console.log("newOrder ==> ", newOrder);
 
   order.createOrder(newOrder);
 
@@ -389,27 +413,6 @@ router.post('/accounts', function (req, res) {
 
 });
 
-router.get('/users/admin/orders', function (req, res) {
-
-  ////////////////gets all users!
-
-  var options = {
-    database: 'beer',
-    collection: 'orders'
-  };
-
-  mLab.listDocuments(options)
-    .then(function (response) {
-      //   console.log('users === >', response.data)
-      res.render('admin_homepage', {
-        allOrders: response.data
-      });
-    })
-    .catch(function (error) {
-      console.log('error', error)
-    });
-
-});
 
 
 

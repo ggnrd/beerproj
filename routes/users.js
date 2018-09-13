@@ -17,78 +17,14 @@ var mLab = MLab({
   database: 'your working database', //optional 
   timeout: 10000 //optional 
 })
-///////////////////////////
-
-
-
-/// users home page
-
-router.get('/', function (req, res) {
-
-
-/// users home page
-
-
-
-  res.render('users');
-});
-
-
-
-
-
-
-// Register--// http://localhost:3000/user/register
-
-router.get('/register', function (req, res) {
-  res.render('register');
-});
-
 // Login// http://localhost:3000/user/login
 router.get('/login', function (req, res) {
   res.render('login');
 });
-// enter to admin portal // http://localhost:3000/users/admin/hompage - need to make only Logged in admin can get into this URL
-router.get('/admin/hompage', function (req, res) {
-  /// use sessioin to make sure only admin can get to this URL
-  var backPage='/admin';
-  if (req.session.passport == undefined) {
-    req.flash('error', 'you Are NOT logged in ');
-    return res.redirect('/admin');
-  }
-  if (req.session.passport.user != process.env.admin_KEY_USER) {
-    req.flash('error', 'you are not allowed because you are not an admin');
-    return res.redirect('/admin');
-  }
-  var options = {
-    database: 'beer', //optional 
-    collection: 'blogs'
-  };
 
-  mLab.listDocuments(options)
-    .then(function (response) {
-      // console.log('blogs === >',response.data)
-    })
-    .catch(function (error) {
-      console.log('error', error)
-    });
-  ////////////// done
-
-  ////////////////gets all users!
-
-  var options = {
-    database: 'beer', //optional 
-    collection: 'users'
-  };
-
-  mLab.listDocuments(options)
-    .then(function (response) {
-      // console.log('users === >',response.data)
-    })
-    .catch(function (error) {
-      console.log('error', error)
-    });
-  res.render('admin_homepage');
+// Register--// http://localhost:3000/user/register
+router.get('/register', function (req, res) {
+  res.render('register');
 });
 
 // Register User/ http://localhost:3000/user/register   send to DB 
@@ -180,7 +116,7 @@ passport.use(new LocalStrategy(
           return done(null, user);
         } else {
           return done(null, false, {
-            message: 'Invalid password'
+            message: 'Somthing is wrong '
           });
         }
       });
@@ -199,7 +135,7 @@ passport.deserializeUser(function (id, done) {
 
 router.post('/login',
   passport.authenticate('local', {
-    successRedirect: '/',
+    successRedirect: '/users/users',
     failureRedirect: '/users/login',
     failureFlash: true
   }),
@@ -218,12 +154,7 @@ router.post('/loginadmin',
     res.redirect('/users/admin/hompage');
 
   });
-/////
-
-
-
-
-
+///
 router.get('/logout', function (req, res) {
   req.logout();
   res.redirect('/users/login');

@@ -33,7 +33,6 @@
         <a href="/users/logout">Logout</a>
       </li>
       <li role="presentation">
-        {{!-- <a href="/users/Orders">Orders</a> --}}
       </li>
       {{else}}
       <li class="nav-item">
@@ -74,6 +73,14 @@
         </a>
       </li>
       {{/if}}
+
+    
+       {{#xif  user.username == 'Sam'   }}
+   BOOM
+ {{else}}
+   BAMM
+ {{/xif}}
+
     </ul>
 
   </div>

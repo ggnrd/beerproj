@@ -1,1 +1,86 @@
+
+ <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 80%;
+      text-align: center;
+      margin: 3%;
+    }
+
+    td,
+    th {
+      border: 1px solid #adaaaa;
+      text-align: center;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #999292;
+    }
+  </style>
+
 <h1>this is {{user.username}}'s orders </h1>
+
+
+
+ <div class="col">
+    <div class="table-container">
+     
+
+      <table>
+        <tr>
+          <th>Email</th>
+          <th>Date</th>
+          <th>liter</th>
+          <th>matireal</th>
+          <th>Filter</th>
+          <th>Spices</th>
+          <th>alco</th>
+          <th>pakege</th>
+          <th>Fname</th>
+          <th>Lname</th>
+          <th>Address</th>
+          <th>cardNumber</th>
+
+
+          <th>More info</th>
+
+          <th>Action</th>
+        </tr>
+        {{#each allOrders}}
+        <tr>
+          <td>{{this.email}}</td>
+          <td>{{this.Date}}</td>
+          <td>{{this.liter}}</td>
+          <td>{{this.matireal}}</td>
+          <td>{{this.Filter}}</td>
+          <td>{{this.Spices}}</td>
+          <td>{{this.alco}}</td>
+          <td>{{this.pakege}}</td>
+          <td>{{this.Fname}}</td>
+          <td>{{this.Lname}}</td>
+          <td>{{this.Address}}</td>
+          <td>{{this.cardNumber}}</td>
+          <td>{{this.textarea}}</td>
+          <td>
+
+
+            <form action="/deleteOrder" method="POST">
+              <input type="hidden" name="id" value={{this._id.$oid}}>
+              <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+            </form>&nbsp&nbsp
+            <form action="/PreeUpdateorder" method="POST">
+              <input type="hidden" name="id" value={{this._id.$oid}}>
+              <input type="hidden" name="date" value={{this.date}}>
+
+              <button class="btn btn-sm" type="submit">Update</button>
+            </form>
+
+          </td>
+
+        </tr>
+        {{/each}}
+      </table>
+    </div>
+  </div>
