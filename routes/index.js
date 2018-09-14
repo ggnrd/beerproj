@@ -19,7 +19,15 @@ var order = require('../models/order');
 // Get Homepage
 // http://localhost:3000/
 router.get('/', function (req, res) {
+
+
+  ////// this is how to save a cookie  for 15 min
+  // res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: true });
+  //end
   res.render('index');
+
+
+
 });
 
 // initialize  the Mlab API
@@ -49,23 +57,23 @@ router.get('/users/admin/hompage', function (req, res) {
   var blogs;
   var users;
   var orders;
-  
-//get all blogs to the var blogs
+
+  //get all blogs to the var blogs
   var options = {
     database: 'beer', //optional 
     collection: 'blogs'
   };
- 
+
   mLab.listDocuments(options)
     .then(function (response) {
-        blogs = response.data;
+      blogs = response.data;
     })
     .catch(function (error) {
       console.log('error', error)
     });
 
 
-//get all users to the var users
+  //get all users to the var users
 
   var options = {
     database: 'beer',
@@ -89,13 +97,14 @@ router.get('/users/admin/hompage', function (req, res) {
 
   mLab.listDocuments(options)
     .then(function (response) {
-      orders = response.data  })
+      orders = response.data
+    })
 
     .catch(function (error) {
       console.log('error', error)
     });
 
-    // rander and send it to the HTML
+  // rander and send it to the HTML
 
   setTimeout(function () {
     res.render('admin_homepage', {
@@ -112,8 +121,14 @@ router.get('/users/admin/hompage', function (req, res) {
 
 // http://localhost:3000/admin
 router.get('/admin', function (req, res) {
-  
-  res.render('admin');
+  try {
+    if (req.session.passport.user == process.env.admin_KEY_USER) {
+      res.redirect('/users/admin/hompage');
+    }
+   } catch (error) {
+    res.render( 'admin');
+  }
+
 });
 
 router.post('/postEmail', function (req, res) {
@@ -272,11 +287,7 @@ var BlogId = "";
 ////////// get to the page to enter the ner detail
 router.post('/PreeUpdateBlog', function (req, res) {
   BlogId = req.body.id;
-  //   BlogDate = new Date();
-  //   BlogDate.toString(BlogDate);
-
   res.render('UpdateBlog');
-
 });
 
 ////////////// blogs
