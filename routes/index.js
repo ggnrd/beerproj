@@ -1,29 +1,103 @@
 var express = require('express');
 var router = express.Router();
 var dotenv = require('dotenv').config();
-
 var bodyParser = require('body-parser');
 var MLab = require('mlab-data-api');
 var nodemailer = require('nodemailer');
-
 var urlencodedParser = bodyParser.urlencoded({
   extended: false
 });
-
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var blog = require('../models/blog');
 var User = require('../models/user');
 var order = require('../models/order');
 
+
+
+//return true if this is the admin
+function isAdmin(req) {
+  //cookie chack 
+
+  if (req.session.passport == undefined && req.cookies.rememberme == undefined) {
+    return false
+
+  }
+  try {
+    if (req.session.passport.user == process.env.admin_KEY_USER) {
+      console.log('1req.session.passport == admin   ');
+      adminby = 'session';
+      return true;
+    } else {
+      return false
+    }
+  } catch (error) {
+    console.log('error', error.massge);
+
+
+  }
+
+
+  if (req.cookies.rememberme == process.env.admin_KEY_USER.toString()) {
+    console.log('1req.cookies == admin   ');
+    adminby = 'cookies';
+    return true
+  } else {
+    console.log('1req.cookies == not admin ');
+    return false
+  }
+}
+// blog = 1 order = 0
+function sendMail(Email, BlogOrOrder) {
+
+  if (BlogOrOrder == true) {
+    text = 'thanks for joinning our Beer Blog?';
+    html = '<h1>this is the BEER Blog !!!</h1>';
+    console.log(text);
+  } else {
+    text = 'Your Oreder was sucsseefuly sent';
+    html = '<h1>We got your order and we are starting to deliver it</h1>';
+    console.log(text);
+
+  }
+
+  nodemailer.createTestAccount((err, account) => {
+    let transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.email_USER, // generated  user
+        pass: process.env.email_Pass // generated  password
+      }
+    });
+
+    // setup email data with unicode symbols
+    let mailOptions = {
+      from: '"Beer Project" <' + process.env.email_USER + '>', // sender address
+      to: Email, // list of receivers
+      subject: 'Beer Blog ✔', // Subject line
+      text: text, // plain text body
+      html: html // html body
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+        console.log('Email address: ' + mailOptions.to);
+
+      }
+    });
+
+  });
+}
 // Get Homepage
 // http://localhost:3000/
 router.get('/', function (req, res) {
 
 
-  ////// this is how to save a cookie  for 15 min
-  // res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: true });
-  //end
+
   res.render('index');
 
 
@@ -45,19 +119,18 @@ var mLab = MLab({
 ////////////////gets all info from DB!
 router.get('/users/admin/hompage', function (req, res) {
   var backPage = '/admin';
-  if (req.session.passport == undefined) {
-    req.flash('error', 'you Are NOT logged in ');
-    return res.redirect('/admin');
-  }
+  if (isAdmin(req)== false) {
+    if (req.session.passport == undefined) {
+     req.flash('error', 'you Are NOT logged in ');
+    return res.redirect('/admin');}
 
-  if (req.session.passport.user != process.env.admin_KEY_USER) {
-    req.flash('error', 'you are not allowed because you are not an admin');
-    return res.redirect('/admin');
-  }
-  var blogs;
-  var users;
-  var orders;
+    if (req.session.passport.user != process.env.admin_KEY_USER) {
+         req.flash('error', 'you are not allowed because you are not an admin');
+         return res.redirect('/admin');}
+  } 
 
+
+  var adminby, blogs, users, orders, success_msg;
   //get all blogs to the var blogs
   var options = {
     database: 'beer', //optional 
@@ -103,13 +176,31 @@ router.get('/users/admin/hompage', function (req, res) {
     .catch(function (error) {
       console.log('error', error)
     });
+  ////// this is how to save a cookie  for 15 min
+  res.cookie('rememberme', process.env.admin_KEY_USER, {
+    expires: new Date(Date.now() + 900000),
+    httpOnly: true
+  });
+
+
+
+  //send flash and then rediract with some data
+  // setTimeout(function () {
+     if (adminby == 'cookies') {
+      var success_msg = req.flash('success_msg', "admin by cookies");
+      var success_msg = req.flash('success_msg');
+    } else {
+      var success_msg = req.flash('success_msg', "admin by session");
+      var success_msg = req.flash('success_msg');
+    }
+  // // }, 1000);
 
   // rander and send it to the HTML
-
   setTimeout(function () {
     res.render('admin_homepage', {
       allBlogs: blogs,
       allUsers: users,
+      success_msg: success_msg[0],
       allOrders: orders
     });
 
@@ -118,15 +209,17 @@ router.get('/users/admin/hompage', function (req, res) {
   ////////////// done
 
 });
+router.get('/admin/hompage', function (req, res) {
+  res.render('admin_homepage');
+});
 
 // http://localhost:3000/admin
 router.get('/admin', function (req, res) {
-  try {
-    if (req.session.passport.user == process.env.admin_KEY_USER) {
-      res.redirect('/users/admin/hompage');
-    }
-   } catch (error) {
-    res.render( 'admin');
+  if (isAdmin(req) == true) {
+    res.redirect('/users/admin/hompage');
+
+  } else {
+    res.render('admin');
   }
 
 });
@@ -140,16 +233,12 @@ router.post('/postEmail', function (req, res) {
 
   // Validation
   req.checkBody('Email', 'Email is required').notEmpty();
-
   var errors = req.validationErrors();
-
   if (errors) {
     res.redirect('/', {
       errors: errors
     });
-
     console.log(errors);
-
   } else {
     var newBlog = new blog({
       email: Email,
@@ -161,38 +250,7 @@ router.post('/postEmail', function (req, res) {
     res.redirect('/');
   }
 
-  nodemailer.createTestAccount((err, account) => {
-    let transporter = nodemailer.createTransport({
-      service: 'Gmail',
-      auth: {
-        user: process.env.email_USER, // generated  user
-        pass: process.env.email_Pass // generated  password
-      }
-    });
-
-    // setup email data with unicode symbols
-    let mailOptions = {
-      from: '"Beer Project" <' + process.env.email_USER + '>', // sender address
-      to: Email, // list of receivers
-      subject: 'Beer Blog ✔', // Subject line
-      text: 'thanks for joinning our Beer Blog?', // plain text body
-      html: '<h1>this is the BEER Blog !!!</h1>' // html body
-    };
-
-    // send mail with defined transport object
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-        console.log('Email address: ' + mailOptions.to);
-
-      }
-    });
-
-  });
-
-
+  sendMail(Email, 1);
 });
 
 router.post('/deleteUser', function (req, res) {
@@ -359,8 +417,6 @@ router.post('/accounts', function (req, res) {
 
   }
 
-
-
   var orderDate = new Date();
   var newOrder = new order({
     email: req.body.order.Email,
@@ -387,41 +443,8 @@ router.post('/accounts', function (req, res) {
   console.log("newOrder ==> ", newOrder);
 
   order.createOrder(newOrder);
-
-  nodemailer.createTestAccount((err, account) => {
-    let transporter = nodemailer.createTransport({
-      service: 'Gmail',
-      auth: {
-        user: process.env.email_USER, // generated  user
-        pass: process.env.email_Pass // generated  password
-      }
-    });
-
-    // setup email data with unicode symbols
-    let mailOptions = {
-      from: '"Beer Project" <' + process.env.email_USER + '>', // sender address
-      to: newOrder.Email, // list of receivers
-      subject: 'Beer Order ✔', // Subject line
-      text: 'Your Oreder was sucsseefuly sent ', // plain text body
-      html: '<h1>We got your order and we are starting to deliver it</h1>' // html body
-    };
-
-    // send mail with defined transport object
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-        console.log('Email address: ' + mailOptions.to);
-
-      }
-    });
-
-  });
+  sendMail(email, 0);
   return true;
-
-
-
 });
 
 

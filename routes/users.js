@@ -156,6 +156,7 @@ router.post('/loginadmin',
   });
 ///
 router.get('/logout', function (req, res) {
+  res.clearCookie("rememberme");
   req.logout();
   res.redirect('/users/login');
 });
