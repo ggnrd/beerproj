@@ -1,0 +1,82 @@
+   <img src="/images/Logo/ProjectBeer.png" style="width:10%">
+
+ <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 80%;
+      text-align: center;
+      margin: 3%;
+    }
+
+    td,
+    th {
+      border: 1px solid #adaaaa;
+      text-align: center;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #999292;
+    }
+  </style>
+
+<h3>this page contains all the info of this uesr</h3>
+
+<h3>disp the user order if exists</h3>
+<h3>
+    Hello {{user.username}} this is your order    last updated on {{allOrders.Date}}</h3>
+
+<div><a><a href="/users/account">accunt</a></a></div>
+
+      <div>  
+        <div class="col" id="Ordersdip">
+
+          <div class="table-container">
+         
+
+            <table>
+              <tr>
+                <th>Email</th>
+                <th>Date</th>
+                <th>liter</th>
+                <th>matireal</th>
+                <th>Filter</th>
+                <th>Spices</th>
+                <th>alco</th>
+                <th>pakege</th>
+                <th>Fname</th>
+                <th>Lname</th>
+                <th>Address</th>
+                <th>ZipCode</th>
+                <th>cardNumber</th>
+                <th>cardExpiry</th>
+                <th>More info</th>
+              </tr>
+
+                {{#each allOrders}}
+              <tr>
+                <td>{{this.email}}</td>
+                <td>{{this.Date}}</td>
+                <td>{{this.liter}}</td>
+                <td>{{this.matireal}}</td>
+                <td>{{this.Filter}}</td>
+                <td>{{this.Spices}}</td>
+                <td>{{this.alco}}</td>
+                <td>{{this.pakege}}</td>
+                <td>{{this.Fname}}</td>
+                <td>{{this.Lname}}</td>
+                <td>{{this.Address}}</td>
+                <td>{{this.ZipCode}}</td>
+                <td style="width:150px">{{this.cardNumber}}</td>
+                <td>{{this.cardExpiry}}</td>
+                <td>{{this.textarea}}</td>
+              </tr>
+          
+
+    
+              {{/each}}
+  </table>
+          </div>
+        </div>
+      </div>

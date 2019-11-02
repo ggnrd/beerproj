@@ -1,4 +1,4 @@
-<body>
+<body onload="CreateTempChart()">
   <img src="/images/Logo/ProjectBeer.png" style="width:10%">
   <style>
     table {
@@ -21,12 +21,15 @@
     }
   </style>
 
-   <div class="col-lg-12">
-            {{#if success_msg}}
-            <div class="alert alert-success">{{success_msg}}</div>
-            {{/if}}
-          </div>
-            <h3>Admin Home Page </h3>
+  <div class="col-lg-12">
+    {{#if success_msg}}
+    <div class="alert alert-success">{{success_msg}}</div>
+    {{/if}}
+  </div>
+
+
+  <h3>Admin Home Page </h3>
+
 
   <div class="row">
     <div class="col-sm-3 col-lg-2">
@@ -35,18 +38,31 @@
           <a class="nav-link active" href="#" id="">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" id="Users">Users</a>
+          <a class="nav-link" href="#" id="Users">Users ({{allUsers.length}})</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" id="Blogs">Blogs</a>
+          <a class="nav-link" href="#" id="Blogs">Blogs ({{allBlogs.length}})</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#" id="Orders">Orders</a>
+          <a class="nav-link disabled" href="#" id="Orders">Orders ({{allOrders.length}})</a>
         </li>
       </ul>
     </div>
     <div class="col-sm-9 col-lg-10">
       <!-- your page content -->
+      <div>
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <h3>this is the beer temp chart </h3>
+              <div id="chartdiv" style=" width: 50%, height: 500px;"></div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+
       <div id="Usersdip" style="display:none">
         {{#if error}}
         <div class="alert alert-danger">{{error}}</div>
@@ -92,64 +108,109 @@
             </div>
           </div>
         </div>
-        
+
+      </div>
+    </div>
+    <div>
+      <div class="col" id="Ordersdip" style="display:none">
+
+        <div class="table-container">
+          <h3>
+            <a href="Orders">Orders</a>
+          </h3>
+
+          <table>
+            <tr>
+              <th>Email</th>
+              <th>Date</th>
+              <th>liter</th>
+              <th>matireal</th>
+              <th>Filter</th>
+              <th>Spices</th>
+              <th>alco</th>
+              <th>pakege</th>
+              <th>Fname</th>
+              <th>Lname</th>
+              <th>Address</th>
+              <th>ZipCode</th>
+              <th>cardNumber</th>
+              <th>cardExpiry</th>
+
+
+              <th>More info</th>
+
+              <th>Action</th>
+            </tr>
+            {{#each allOrders}}
+            <tr>
+              <td>{{this.email}}</td>
+              <td>{{this.Date}}</td>
+              <td>{{this.liter}}</td>
+              <td>{{this.matireal}}</td>
+              <td>{{this.Filter}}</td>
+              <td>{{this.Spices}}</td>
+              <td>{{this.alco}}</td>
+              <td>{{this.pakege}}</td>
+              <td>{{this.Fname}}</td>
+              <td>{{this.Lname}}</td>
+              <td>{{this.Address}}</td>
+              <td>{{this.ZipCode}}</td>
+              <td style="width:150px">{{this.cardNumber}}</td>
+              <td>{{this.cardExpiry}}</td>
+              <td>{{this.textarea}}</td>
+              <td>
+
+
+                <form action="/deleteOrder" method="POST">
+                  <input type="hidden" name="id" value={{this._id.$oid}}>
+                  <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                </form>&nbsp&nbsp
+                <form action="/PreeUpdateorder" method="POST">
+                  <input type="hidden" name="id" value={{this._id.$oid}}>
+                  <input type="hidden" name="date" value={{this.date}}>
+
+                  <button class="btn btn-sm" type="submit">Update</button>
+                </form>
+
+              </td>
+
+            </tr>
+            {{/each}}
+          </table>
         </div>
       </div>
-      <div>
-        <div class="col" id="Ordersdip" style="display:none">
+    </div>
+    <div>
 
+
+      <div id="Blogsdisp" style="display:none">
+
+        <div class="col">
           <div class="table-container">
             <h3>
-              <a href="Orders">Orders</a>
+              <a href="Blogs">Blogs</a>
             </h3>
 
             <table>
               <tr>
                 <th>Email</th>
                 <th>Date</th>
-                <th>liter</th>
-                <th>matireal</th>
-                <th>Filter</th>
-                <th>Spices</th>
-                <th>alco</th>
-                <th>pakege</th>
-                <th>Fname</th>
-                <th>Lname</th>
-                <th>Address</th>
-                <th>ZipCode</th>
-                <th>cardNumber</th>
-                <th>cardExpiry</th>
-
-
-                <th>More info</th>
-
                 <th>Action</th>
+
               </tr>
-              {{#each allOrders}}
+              {{#each allBlogs}}
               <tr>
+
                 <td>{{this.email}}</td>
-                <td>{{this.Date}}</td>
-                <td>{{this.liter}}</td>
-                <td>{{this.matireal}}</td>
-                <td>{{this.Filter}}</td>
-                <td>{{this.Spices}}</td>
-                <td>{{this.alco}}</td>
-                <td>{{this.pakege}}</td>
-                <td>{{this.Fname}}</td>
-                <td>{{this.Lname}}</td>
-                <td>{{this.Address}}</td>
-                <td>{{this.ZipCode}}</td>
-                <td style="width:150px">{{this.cardNumber}}</td>
-                <td>{{this.cardExpiry}}</td>
-                <td>{{this.textarea}}</td>
+                <td>{{this.date}}</td>
                 <td>
 
 
-                  <form action="/deleteOrder" method="POST">
+                  <form action="/deleteBlog" method="POST">
                     <input type="hidden" name="id" value={{this._id.$oid}}>
                     <button class="btn btn-danger btn-sm" type="submit">Delete</button>
                   </form>&nbsp&nbsp
-                  <form action="/PreeUpdateorder" method="POST">
+                  <form action="/PreeUpdateBlog" method="POST">
                     <input type="hidden" name="id" value={{this._id.$oid}}>
                     <input type="hidden" name="date" value={{this.date}}>
 
@@ -164,53 +225,35 @@
           </div>
         </div>
       </div>
-      <div>
-        
-        
-        <div id="Blogsdisp"  style="display:none">
-
-          <div class="col">
-            <div class="table-container">
-              <h3>
-                <a href="Blogs">Blogs</a>
-              </h3>
-
-              <table>
-                <tr>
-                  <th>Email</th>
-                  <th>Date</th>
-                  <th>Action</th>
-
-                </tr>
-                {{#each allBlogs}}
-                <tr>
-
-                  <td>{{this.email}}</td>
-                  <td>{{this.date}}</td>
-                  <td>
+    </div>
 
 
-                    <form action="/deleteBlog" method="POST">
-                      <input type="hidden" name="id" value={{this._id.$oid}}>
-                      <button class="btn btn-danger btn-sm" type="submit">Delete</button>
-                    </form>&nbsp&nbsp
-                    <form action="/PreeUpdateBlog" method="POST">
-                      <input type="hidden" name="id" value={{this._id.$oid}}>
-                      <input type="hidden" name="date" value={{this.date}}>
-
-                      <button class="btn btn-sm" type="submit">Update</button>
-                    </form>
-
-                  </td>
-
-                </tr>
-                {{/each}}
-              </table>
-            </div>
-          </div></div>
+    <div style="display:none">
+      <div style="display:block">
+        <div class="col">
+          <div class="table-container">
+            <h3>
+              <a href="Blogs">time</a>
+            </h3>
+            <table id="tempTable">
+              <tr>
+                <th>TEMP</th>
+                <th>Date</th>
+              </tr>
+              {{#each time}}
+              <tr>
+                <td id="temp">{{this.TEMP}}</td>
+                <td>{{this.date}}</td>
+              </tr>
+              {{/each}}
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
+  <div id="chartdiv" style=" width: 100%, height: 500px;"></div>
 
 
 </body>

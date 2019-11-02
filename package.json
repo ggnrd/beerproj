@@ -13,6 +13,7 @@
     "angular": "^1.6.9",
     "bcryptjs": "*",
     "body-parser": "*",
+    "chart.js": "^2.8.0",
     "connect-flash": "*",
     "cookie-parser": "^1.4.1",
     "dotenv": "^5.0.1",
@@ -24,9 +25,10 @@
     "mlab-data-api": "^0.2.2",
     "mongodb": "*",
     "mongoose": "4.1.9",
-    "nodemailer": "^4.6.3",
+    "nodemailer": "^2.7.2",
     "passport": "*",
     "passport-http": "*",
-    "passport-local": "*"
+    "passport-local": "*",
+    "plotly": "^1.0.6"
   }
 }

@@ -7,6 +7,7 @@
     <form action="/UpdateUser" method="POST">
         <span> NEW LastName:</span>
         <input type="text" class="form-control" placeholder=" NEW Name" name="name" required autofocus>
+        <input type="hidden"  name="user" value="{{user._id}}" required autofocus>
         <span> NEW LastName:</span>
         <input type="text" class="form-control" placeholder=" NEW LastName" name="LastName" required>
         <span> NEW Username:</span>
@@ -22,7 +23,13 @@
         <button class="btn btn btn-info btn-lg" type="submit">Update</button>
     </form>
    
-    <button class="btn btn btn-secondary btn-lg" type="submit"><a href="/users/admin/hompage">Back</a></button>
+    <button class="btn btn btn-secondary btn-lg" type="submit">
+           {{#if admin}}
+        <a href="/users/admin/hompage">Back</a>
+          {{else}}
+           <a href="/users/account">Back</a>
+            {{/if}}
+        </button>
 
 
    

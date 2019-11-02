@@ -1,7 +1,9 @@
 <img src="/images/Logo/ProjectBeer.png" style="width:10%">
 
 <h1>update a Order</h1>
-
+{{#if error}}
+              <div class="alert alert-danger">{{error}}</div>
+               {{/if}}
 <div style="width:40% ;margin:0 0  50px 550px;" align="center" class="card-body">
 
     <form action="/UpdateOrder" method="POST" class="card-title">
@@ -10,19 +12,19 @@
             <div class="row">
                 <div class="col">
                     <span> NEW Email:</span>
-                    <input type="email" class="form-control" placeholder=" NEW Email" name="email" >
+                    <input type="email" class="form-control" placeholder=" NEW Email" name="email">
                     <span> NEW liter:</span>
                     <div class="col-4">
 
                         <div>
                             <label class="btn btn-primary">
-                                <input type="radio" value="5L" name="group2"  ng-model="orderform.liter"> 5L
+                                <input type="radio" value="5L" name="group2" ng-model="orderform.liter"> 5L
                             </label>
                             <label class="btn btn-primary">
-                                <input type="radio" value="10L" name="group2"  ng-model="orderform.liter"> 10L
+                                <input type="radio" value="10L" name="group2" ng-model="orderform.liter"> 10L
                             </label>
                             <label class="btn btn-primary">
-                                <input type="radio" value="20L" name="group2"  ng-model="orderform.liter"> 20L
+                                <input type="radio" value="20L" name="group2" ng-model="orderform.liter"> 20L
                             </label>
                         </div>
 
@@ -37,16 +39,20 @@
 
                                 <div>
                                     <label class="btn btn-primary">
-                                        <input type="radio" value="Yeast" name="group8"  ng-model="orderform.matireal"> Yeast
+                                        <input type="radio" value="Yeast" name="group8" ng-model="orderform.matireal">
+                                        Yeast
                                     </label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" value="wheat" name="group8"  ng-model="orderform.matireal"> wheat
+                                        <input type="radio" value="wheat" name="group8" ng-model="orderform.matireal">
+                                        wheat
                                     </label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" value="Hops" name="group8"  ng-model="orderform.matireal"> Hops
+                                        <input type="radio" value="Hops" name="group8" ng-model="orderform.matireal">
+                                        Hops
                                     </label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" value="Malt" name="group8"  ng-model="orderform.matireal"> Malt
+                                        <input type="radio" value="Malt" name="group8" ng-model="orderform.matireal">
+                                        Malt
                                     </label>
                                 </div>
 
@@ -57,9 +63,9 @@
                     </div>
 
                     <span> NEW Filter:</span>
-                    <input type="text" class="form-control" placeholder=" NEW Filter" name="Filter" >
+                    <input type="text" class="form-control" placeholder=" NEW Filter" name="Filter">
                     <span> NEW Spices:</span>
-                    <input type="text" class="form-control" placeholder=" NEW Spices" name="Spices" >
+                    <input type="text" class="form-control" placeholder=" NEW Spices" name="Spices">
                     <div class="col-4">
 
                         <div style="margin: 10px;">
@@ -67,16 +73,16 @@
 
                             <div>
                                 <label class="btn btn-primary">
-                                    <input type="radio" value="3%" name="group4"  ng-model="orderform.alco"> 3%
+                                    <input type="radio" value="3%" name="group4" ng-model="orderform.alco"> 3%
                                 </label>
                                 <label class="btn btn-primary">
-                                    <input type="radio" value="5%" name="group4"  ng-model="orderform.alco"> 5%
+                                    <input type="radio" value="5%" name="group4" ng-model="orderform.alco"> 5%
                                 </label>
                                 <label class="btn btn-primary">
-                                    <input type="radio" value="8%" name="group4"  ng-model="orderform.alco"> 8%
+                                    <input type="radio" value="8%" name="group4" ng-model="orderform.alco"> 8%
                                 </label>
                                 <label class="btn btn-primary">
-                                    <input type="radio" value="10%" name="group4"  ng-model="orderform.alco"> 10%
+                                    <input type="radio" value="10%" name="group4" ng-model="orderform.alco"> 10%
                                 </label>
 
                             </div>
@@ -88,11 +94,13 @@
                         <div>
                             <div class="btn-group btn-lg">
                                 <label class="btn btn-primary">
-                                    <input type="radio" value="keg" name="group1"  ng-model="orderform.pakege"> keg
-                                    <img src="https://png.icons8.com/wooden-beer-keg/win10/54/000000" style="width:25px">
+                                    <input type="radio" value="keg" name="group1" ng-model="orderform.pakege"> keg
+                                    <img src="https://png.icons8.com/wooden-beer-keg/win10/54/000000"
+                                        style="width:25px">
                                 </label>
                                 <label class="btn btn-primary">
-                                    <input type="radio" value="bottles" name="group1"  ng-model="orderform.pakege"> bottles
+                                    <input type="radio" value="bottles" name="group1" ng-model="orderform.pakege">
+                                    bottles
                                     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAA2CAYAAACMRWrdAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKNSURBVGhD7dpLqI1RHIbx415KEkoxUQphwpCByKXEQEphIANJSYmkTIiOiTAzYsKAkSK3DNwmxERCiWIgRVFC7p53sGu1es/Z6+zv7NZatZ/6TTir/qtz9v7W/vbX18WW4zn+Gd9xDpNQVXOg4d2mQpdQVf1wG3GmoZrOw23CWYxqOg23CWc+qmkydmN/G+vQq5RWYXsb01Fdd+BeU6ENqK6XcJsJ6XVYXd/gNhPS9a6qJsJtJHYWVTUbbiOxm6iqZXAbiT1FVW2G20jsI6pqL9xGnHGoorG4BbcJZz2KbxT0GcttYCA/sAZFdwpu+Ha+YgGKbBvc0KleYyqKahZSThrtXERRXYEbtBMrUESL4Abs1F0U0Qm4AZuYiezpWOSGa0IfQrP3BW64Jo4ie7oGueGaKOJz2ju44UI6XbzFh+DfBnMA2XsBN5zoz3QXJqDVPFyG+/mWncjeA7jhfmEpXCOgi7FbJ1vQq9cQ24NXkXtIaSXitTIF2dO9wfg1chUp6fAcr/0Dfa7L3kbEwx1HSiPxG+Ha9ygiffoNB5NDSO0TwrX6UywivaWHg4lu5qT2BuHaJyiiJQgHk31IrdiN6euicDA5jNQ+I1z7DEW0FuFgchIp6d3vL8K1+g0W0SaEg8kNpKTHJuK1OigXkX5jjyKp1zHd44/X3kavbjYeenQopu/IBmsM3DrRhTt7ZxC/TkRvCgM97qA3jWtw62Qhsncdbjj5CZ1CZkCNhi7o9+F+vmU1svcYbriY7o3ogOv+L7YV2YtPDsNhKEeyrhUfYofDQWSvG/cVi7j9pltrbrgmjiF7D+GGa0JfzmdPx6KUx2RT6VKgy0IRzcURXIDuF3ZCT+nsgL6cb1hf339ksZ0syEx8aQAAAABJRU5ErkJggg=="
                                         style="width:25px">
                                 </label>
@@ -101,28 +109,28 @@
                     </div>
 
                     <span> NEW textarea:</span>
-                    <input type="text" class="form-control" placeholder=" NEW textarea" name="textarea" >
+                    <input type="text" class="form-control" placeholder=" NEW textarea" name="textarea">
                 </div>
                 <div class="col">
 
                     <span> NEW Fname:</span>
-                    <input type="text" class="form-control" placeholder=" NEW Fname" name="Fname" >
+                    <input type="text" class="form-control" placeholder=" NEW Fname" name="Fname">
                     <span> NEW Lname:</span>
-                    <input type="text" class="form-control" placeholder=" NEW Lname" name="Lname" >
+                    <input type="text" class="form-control" placeholder=" NEW Lname" name="Lname">
                     <span> NEW Address:</span>
-                    <input type="text" class="form-control" placeholder=" NEW Address" name="Address" >
+                    <input type="text" class="form-control" placeholder=" NEW Address" name="Address">
                     <span> NEW City:</span>
-                    <input type="text" class="form-control" placeholder=" NEW City" name="City" >
+                    <input type="text" class="form-control" placeholder=" NEW City" name="City">
                     <span> NEW State:</span>
-                    <input type="text" class="form-control" placeholder=" NEW State" name="State" >
+                    <input type="text" class="form-control" placeholder=" NEW State" name="State">
                     <span> NEW ZipCode:</span>
-                    <input type="text" class="form-control" placeholder=" NEW ZipCode" name="ZipCode" >
+                    <input type="text" class="form-control" placeholder=" NEW ZipCode" name="ZipCode">
                     <span> NEW cardNumber:</span>
-                    <input type="text" class="form-control" placeholder=" NEW text" name="cardNumber" >
+                    <input type="text" class="form-control" placeholder=" NEW text" name="cardNumber">
                     <span> NEW cardExpiry:</span>
-                    <input type="text" class="form-control" placeholder=" NEW text" name="cardExpiry" >
+                    <input type="text" class="form-control" placeholder=" NEW text" name="cardExpiry">
                     <span> NEW couponCode:</span>
-                    <input type="text" class="form-control" placeholder=" NEW text" name="couponCode" >
+                    <input type="text" class="form-control" placeholder=" NEW text" name="couponCode">
                 </div>
             </div>
 
@@ -141,7 +149,10 @@
     <button class="btn btn btn-info btn-lg" type="submit">Update</button>
     </form>
     <button class="btn btn btn-secondary btn-lg" type="submit">
-        <a href="/users/admin/hompage">Back</a>
+        {{#if admin}} <a href="/users/admin/hompage">Back</a>
+        {{else}} <a href="/users/account/">Back</a>
+        {{/if}}
+
     </button>
 
 </div>

@@ -60,10 +60,10 @@ var OrderSchema = mongoose.Schema({
   },
   Date: {
     type: String
+  },
+  userId: {
+    type: String
   }
-
-
-
 
 });
 
@@ -71,29 +71,28 @@ var OrderSchema = mongoose.Schema({
 
 var Order = module.exports = mongoose.model('Order', OrderSchema);
 
-module.exports.createOrder = function(newOrder, callback){
-    bcrypt.genSalt(10, function(err, salt) {
-	    bcrypt.hash(newOrder.cardNumber, salt, function(err, hash) {
-            newOrder.cardNumber = hash;
-            // console.log("newOrder  ==>   ",newOrder);
-	        newOrder.save(callback);
-	    });
+module.exports.createOrder = function (newOrder, callback) {
+  bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.hash(newOrder.cardNumber, salt, function (err, hash) {
+      newOrder.cardNumber = hash;
+      //console.log("newOrder  ==>   ",newOrder);
+      newOrder.save(callback);
     });
+  });
 
-    newOrder.save(newOrder);
+  newOrder.save(newOrder);
 }
 
 
-module.exports.HashOrder = function(options, callback){
-  bcrypt.genSalt(10, function(err, salt) {
-    bcrypt.hash(options.updateObject.cardNumber, salt, function(err, hash) {
-        console.log("options.updateObject.cardNumber  (Befor hash) ==>   ",options.updateObject.cardNumber);
-        options.updateObject.cardNumber = hash;
-        console.log("options.updateObject.cardNumber (After hash)  ==>   ",options.updateObject.cardNumber);
+module.exports.HashOrder = function (options, callback) {
+  bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.hash(options.updateObject.cardNumber, salt, function (err, hash) {
+      console.log("options.updateObject.cardNumber  (Befor hash) ==>   ", options.updateObject.cardNumber);
+      options.updateObject.cardNumber = hash;
+      console.log("options.updateObject.cardNumber (After hash)  ==>   ", options.updateObject.cardNumber);
     });
-});
+  });
 
 
 
 }
-

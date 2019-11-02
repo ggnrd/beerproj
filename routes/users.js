@@ -6,6 +6,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/user');
 var MLab = require('mlab-data-api');
 var nodemailer = require('nodemailer');
+var bcrypt = require('bcryptjs');
 
 
 // initialize  the Mlab API
@@ -17,6 +18,85 @@ var mLab = MLab({
   database: 'your working database', //optional 
   timeout: 10000 //optional 
 })
+
+
+// Email  string mmail address,x new pass to the user
+function sendMail(Email, x) {
+  //  var x= Math.floor((Math.random() * 100000000) + 1);
+  text = 'forgot your password?   no problem....';
+  html = '<h1>forgot your password?   no problem....</h1> \n this is your new passs : ' + x + '<br><a href="localhost:3000/users/login">log in</a>';
+
+  let transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: process.env.email_USER, // generated  user
+      pass: process.env.email_Pass // generated  password
+    }
+  });
+
+  // setup email data with unicode symbols
+  let mailOptions = {
+    from: '"Beer Project" <' + process.env.email_USER + '>', // sender address
+    to: Email, // list of receivers
+    subject: 'forgot password ✔', // Subject line
+    text: text, // plain text body
+    html: html // html body
+  };
+
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+      console.log('Email address: ' + mailOptions.to);
+
+    }
+  });
+
+};
+
+function UpdateUserButwontCahngeAdminUser(options) {
+  if (options.id == process.env.admin_KEY_USER || options.updateObject.username == process.env.admin) {
+    console.log("cant change admin user");
+    return options
+  } else {
+    setTimeout(function () {
+      mLab.updateDocument(options)
+        .then(function (response) {
+          console.log("User Update Sucssesfuly");
+
+          return options
+        })
+        .catch(function (error) {
+          console.log('error', error)
+          return options
+        });
+    }, 1000);
+  }
+
+}
+
+function UpdateUserToORdersTrue(id) {
+
+  var options = {
+    database: 'beer',
+    collection: 'users',
+    id: id,
+    updateObject: {
+      orders: true
+    }
+  };
+
+  mLab.updateDocument(options)
+    .then(function (response) {})
+    .catch(function (error) {
+      console.log('error', error)
+    });
+}
+
+
+
 // Login// http://localhost:3000/user/login
 router.get('/login', function (req, res) {
   res.render('login');
@@ -35,6 +115,7 @@ router.post('/register', function (req, res) {
   var email = req.body.email;
   var password = req.body.password;
   var password1 = req.body.password1;
+
 
   // Validation
   req.checkBody('name', 'Name is required').notEmpty();
@@ -55,7 +136,9 @@ router.post('/register', function (req, res) {
       name: name,
       email: email,
       username: username,
-      password: password
+      password: password,
+      userCreateAt: new Date(),
+      orders: false
     });
 
     User.createUser(newUser, function (err, user) {
@@ -122,6 +205,69 @@ passport.use(new LocalStrategy(
       });
     });
   }));
+//get to uesr homepage  include order infoo    need to connect order to the user than disp the order by user
+router.get('/UserMainPage', function (req, res) {
+  //get all orders to the var orders
+  var orders = '',
+    user, Dateshort;
+  try {
+    var options = {
+      database: 'beer',
+      collection: 'orders',
+      query: {
+        "userId": res.locals.user.id
+      }
+    };
+  } catch (e) {
+    console.log(e);
+    res.redirect('/');
+
+  };
+
+
+
+
+
+
+
+  mLab.listDocuments(options)
+    .then(function (response) {
+      orders = response.data
+      console.log('orders', orders);
+      for (let index = 0; index < orders.length; index++) {
+        Dateshort = orders[index].Date.split("GMT");
+        orders[index].Date = Dateshort[0];
+        orders[index].cardNumber = orders[index].cardNumber.substring(0, 10) + "...";
+      }
+    })
+
+    .catch(function (error) {
+      console.log('error', error)
+    });
+
+  // var options = {
+  //   database: 'beer',
+  //   collection: 'users',
+  //   findOne: false
+  // };
+  // mLab.listDocuments(options)
+  // .then(function (response) {
+  //   user = response.data
+  //   //console.log('user',user);
+
+  // })
+
+  // .catch(function (error) {
+  //   console.log('error', error)
+  // });
+  setTimeout(function () {
+    res.render('UserMainPage', {
+      allOrders: orders
+    });
+
+
+  }, 3000);
+});
 
 passport.serializeUser(function (user, done) {
   done(null, user.id);
@@ -135,7 +281,7 @@ passport.deserializeUser(function (id, done) {
 
 router.post('/login',
   passport.authenticate('local', {
-    successRedirect: '/',
+    successRedirect: '/users/UserMainPage',
     failureRedirect: '/users/login',
     failureFlash: true
   }),
@@ -159,6 +305,76 @@ router.get('/logout', function (req, res) {
   res.clearCookie("rememberme");
   req.logout();
   res.redirect('/users/login');
+});
+
+
+router.get('/resetpass', function (req, res) {
+
+  res.render('forgotpassword');
+});
+router.post('/postresetpass', function (req, res) {
+
+  try {
+    var options = {
+      database: 'beer',
+      collection: 'users',
+      query: {
+        "email": req.body.email
+      }
+    };
+  } catch (e) {
+    console.log(e);
+  };
+  mLab.listDocuments(options)
+    .then(function (response) {
+      orders = response.data
+      console.log('orders', orders);
+      var x = Math.floor((Math.random() * 100000000) + 1);
+
+      var options = {
+        database: 'beer',
+        collection: 'users',
+        updateObject: orders
+
+      };
+      options.updateObject[0].password = x.toString();
+      options.updateObject[0].password = bcrypt.hashSync(options.updateObject[0].password, 10);
+
+      console.log(options);
+      var options = {
+        database: 'beer',
+        collection: 'users',
+        updateObject: orders[0],
+        id: options.updateObject[0]._id.$oid
+
+      };
+      mLab.updateDocument(options)
+        .then(function (response) {
+          orders = response.data
+
+        })
+        .catch(function (error) {
+          console.log('error', error)
+        });
+      sendMail(orders[0].email, x);
+      req.flash('success_msg', "an Email was sent");
+      res.redirect('/users/login');
+    })
+
+    .catch(function (error) {
+      console.log('error', error)
+      req.flash('error', 'Email is not exists');
+    });
+
+
+});
+
+
+
+router.get('/postresetpass*', function (req, res) {
+  res.render('forgotpassword');
+
+
 });
 
 module.exports = router;
