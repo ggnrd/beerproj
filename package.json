@@ -24,7 +24,7 @@
     "express-validator": "*",
     "mlab-data-api": "^0.2.2",
     "mongodb": "*",
-    "mongoose": "4.1.9",
+    "mongoose": "5.7.5",
     "nodemailer": "^2.7.2",
     "passport": "*",
     "passport-http": "*",
