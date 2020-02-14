@@ -53,7 +53,6 @@ module.exports.comparePassword = function (candidatePassword, hash, callback) {
   });
 }
 
-
 module.exports.HashUser = function (options, callback) {
   bcrypt.genSalt(10, function (err, salt) {
     bcrypt.hash(options.updateObject.password, salt, function (err, hash) {

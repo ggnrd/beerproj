@@ -73,6 +73,9 @@ $(document).ready(function() {
   $("#Orders").click(function() {
     $("#Ordersdip").toggle();
   });
+  $("#NEW_BLOG").click(function() {
+    $("#NEW_BLOGpost").toggle();
+  });
 });
 
 ///////////////////////////////////

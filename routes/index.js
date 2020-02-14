@@ -10,6 +10,7 @@ var urlencodedParser = bodyParser.urlencoded({
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var blog = require('../models/blog');
+var TEMP = require('../models/TEMP');
 var User = require('../models/user');
 var order = require('../models/order');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -36,6 +37,28 @@ function UpdateUserButwontCahngeAdminUser(options) {
   }
 
 }
+
+
+
+function getDocument(options) {
+  return new Promise(resolve => {
+    resolve(mLab.viewDocument(options));
+  })
+}
+
+
+async function msg(options) {
+  try {
+    var b = await getDocument(options);
+    // console.log(" wait? good from the async func  🤡" +JSON.stringify( b.data));
+    return b;
+  } catch (err) {
+    console.log('bad   from the async func ' + err);
+  }
+
+}
+
+
 
 function UpdateUserToORdersTrue(id) {
   console.log(id);
@@ -98,6 +121,43 @@ function DefultParamsObjects(params) {
 
 
 }
+
+function isBlogExits(blog) {
+
+  //get all blogs to the var blogs
+  var options = {
+    database: 'beer', //optional 
+    collection: 'blogs'
+  };
+
+  mLab.listDocuments(options, Email)
+    .then(function (response, Email) {
+      blogs = response.data;
+      Email = req.body.Email;
+
+
+
+      return results = blogs.some(({
+        email
+      }) => email == Email);
+
+
+
+    })
+    .catch(function (error) {
+      console.log('error', error)
+    });
+
+
+}
+
+function return10chars() {
+
+  return this.substring(0, 9);
+
+}
+
+
 // initialize  the Mlab API
 var mLab = MLab({
   key: process.env.mongo_mlabKey,
@@ -115,12 +175,11 @@ var orderId = "";
 //return true if this is the admin
 function isAdmin(req) {
   //cookie chack 
-
-  if (req.session.passport == undefined && req.cookies.rememberme == undefined) {
-    return false
-
-  }
   try {
+    if (req.session.passport == undefined && req.cookies.rememberme == undefined) {
+      return false
+    }
+
     if (req.session.passport.user == process.env.admin_KEY_USER) {
       console.log('1req.session.passport == admin   ');
       adminby = 'session';
@@ -130,33 +189,13 @@ function isAdmin(req) {
     }
   } catch (error) {
     console.log('error', error.massge);
-
-
-  }
-
-
-  if (req.cookies.rememberme == process.env.admin_KEY_USER.toString()) {
-    console.log('1req.cookies == admin   ');
-    adminby = 'cookies';
-    return true
-  } else {
-    console.log('1req.cookies == not admin ');
     return false
   }
+
+
 }
 // blog = 1 order = 0
-function sendMail(Email, BlogOrOrder) {
-
-  if (BlogOrOrder == true) {
-    text = 'thanks for joinning our Beer Blog?';
-    html = '<h1>this is the BEER Blog !!!</h1> <br><a href="localhost:3000/unsubscribe/?email=' + Email + '&id=null">unsubscribe</a>';
-    console.log(text);
-  } else {
-    text = 'Your Oreder was sucsseefuly sent';
-    html = '<h1>We got your order and we are starting to deliver it</h1>';
-    console.log(text);
-
-  }
+function sendMail(Email, whatTOsend) {
 
   let transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -171,8 +210,8 @@ function sendMail(Email, BlogOrOrder) {
     from: '"Beer Project" <' + process.env.email_USER + '>', // sender address
     to: Email, // list of receivers
     subject: 'Beer Blog ✔', // Subject line
-    text: text, // plain text body
-    html: html // html body
+    text: whatTOsend.text, // plain text body
+    html: whatTOsend.html // html body
   };
 
   // send mail with defined transport object
@@ -191,13 +230,7 @@ function sendMail(Email, BlogOrOrder) {
 // Get Homepage
 // http://localhost:3000/
 router.get('/', function (req, res) {
-
-
-
   res.render('index');
-
-
-
 });
 
 ////////////////gets all info from DB!
@@ -214,7 +247,6 @@ router.get('/users/admin/hompage', function (req, res) {
       return res.redirect('/admin');
     }
   }
-
 
   var adminby, blogs, users, orders, success_msg, time;
   //get all users to the var users
@@ -257,6 +289,11 @@ router.get('/users/admin/hompage', function (req, res) {
   mLab.listDocuments(options)
     .then(function (response) {
       users = response.data;
+
+      Object.keys(response.data).forEach(function (password) {
+        users[password].password = response.data[password].password.substring(0, 9) + ".....";
+      });
+
     })
     .catch(function (error) {
       console.log('error', error)
@@ -274,7 +311,9 @@ router.get('/users/admin/hompage', function (req, res) {
     .then(function (response) {
       orders = response.data
       //  console.log('orders', orders)
-
+      Object.keys(response.data).forEach(function (cardNumber) {
+        orders[cardNumber].cardNumber = response.data[cardNumber].cardNumber.substring(0, 9) + ".....";
+      });
     })
 
     .catch(function (error) {
@@ -332,11 +371,37 @@ router.get('/admin', function (req, res) {
 
 router.post('/postEmail', function (req, res) {
 
+for (let index = 0; index < 5; index++) {
+   var options = {
+    database: 'beer',
+    collection: 'BEER_TEMP',
+    data:[{
+      TEMP: Math.floor((Math.random() * 80) + 10),
+      date: new Date().toLocaleString()
+    }] 
+  };
+
+  mLab.insertDocuments(options)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log('error', error)
+    });
+
+}
+ 
+
+
+
+
+
+
 
   // Register User/ http://localhost:3000/user/register   send to DB 
   var Email = req.body.Email;
-  var date = new Date();
-  date.toDateString();
+  var date = new Date().toLocaleString();
+  var results;
   // Validation
   req.checkBody('Email', 'Email is required').notEmpty();
   var errors = req.validationErrors();
@@ -351,21 +416,63 @@ router.post('/postEmail', function (req, res) {
       date: date
     });
 
-    blog.createBlog(newBlog);
-    // need yo show a massege 
-    setTimeout(function () {
-      res.redirect('/')
-    }, 7000);
+
+
+    //get all blogs to the var blogs
+    var options = {
+      database: 'beer', //optional 
+      collection: 'blogs'
+    };
+
+    mLab.listDocuments(options, Email)
+      .then(function (response, Email) {
+        blogs = response.data;
+        Email = req.body.Email;
+
+        try {
+          results = blogs.some(({
+            email
+          }) => email == Email);
+
+
+        } catch (error) {
+          console.log(error);
+        }
+      }).then(function (response) {
+
+
+        if (!results) {
+          blog.createBlog(newBlog);
+          // need yo show a massege 
+          var whatTOsend = {
+            text: "Your Oreder was sucsseefuly sent",
+            html: "<h1>We got your order and we are starting to deliver it</h1>"
+          }
+          sendMail(newBlog.email, whatTOsend);
+        }
+        setTimeout(function () {
+          res.redirect('/')
+        }, 7000);
+
+
+      })
+      .catch(function (error) {
+        console.log('error', error)
+      });
+
+
+
 
   }
 
 
-  sendMail(Email, 1);
 });
 
 
 router.get('/users/account/', function (req, res) {
-
+  if (req.isUnauthenticated()) {
+    res.redirect('./')
+  }
   res.render('account');
   /////res.render('UpdateUser');
 
@@ -476,7 +583,7 @@ router.post('/PreeUpdateBlog', function (req, res) {
 router.post('/UpdateBlog', function (req, res) {
 
   var email = req.body.email;
-  var BlogDate = new Date();
+  var BlogDate = new Date().toLocaleString();
   console.log("BlogDate ==> ", BlogDate);
 
   // Validation
@@ -587,33 +694,23 @@ router.post('/unsubscribeToMlab', function (req, res) {
 
 
 
-
-
 ////////    Order 
 router.post('/accounts', function (req, res) {
-  console.log(req.body);
-  try {
-    userId = res.locals.user.id
-  } catch (error) {
-    console.log(error);
-    userId = false;
-    return false
+  if (req.isUnauthenticated()) {
+    throw err;
   }
 
-
-  if (req.checkBody('cardCVC', 'Only 3 Numbers').len(3, 3)) {
-    console.log("good  cvc");
+  if (req.checkBody('cardCVC', 'Only 3 Numbers').length == 3) {
+    // console.log("good  cvc");
   }
   var err = req.validationErrors();
-  var userId;
   if (err) {
     console.log(err);
     req.body.order.CVC = 000;
   }
 
 
-  var orderDate = new Date();
-  orderDate.toDateString();
+  var orderDate = new Date().toLocaleString();
   var newOrder = new order({
     email: req.body.order.Email,
     liter: req.body.order.liter,
@@ -634,14 +731,20 @@ router.post('/accounts', function (req, res) {
     couponCode: req.body.order.couponCode,
     cardCVC: req.body.order.CVC,
     Date: orderDate,
-    userId: userId
+    userId: req.user.id
 
   });
   newOrder = DefultParamsObjects(newOrder);
- // console.log("newOrder ==> ", newOrder);
+  // console.log("newOrder ==> ", newOrder);
   UpdateUserToORdersTrue(newOrder.userId);
   order.createOrder(newOrder);
-  sendMail(req.body.order.Email, 0);
+  var whatTOsend = {
+    text: "thanks for joinning our Beer Blog?",
+    html: "<h1>this is the BEER Blog !!!</h1> <br><a href='localhost:3000/unsubscribe/?email=' " + req.body.order.Email + "'&id=null'>unsubscribe</a>"
+  }
+
+
+  sendMail(req.body.order.Email, whatTOsend);
   return true;
 });
 
@@ -653,7 +756,13 @@ router.post('/deleteOrder', function (req, res) {
   };
   mLab.deleteDocument(options)
     .then(function (response) {
-      res.redirect('/users/admin/hompage');
+      if (isAdmin(req)) {
+        res.redirect('/users/admin/hompage');
+
+      } else {
+        res.redirect('/users/UserMainPage');
+
+      }
     })
     .catch(function (error) {
       console.log('error', error)
@@ -663,15 +772,21 @@ router.post('/deleteOrder', function (req, res) {
 ////////// get to the page to enter the ner detail
 router.post('/PreeUpdateorder', function (req, res) {
   orderId = req.body.id;
-  res.render('Updateorder');
+  orderId = req.body.id;
+  res.render('Updateorder', {
+    orderId: orderId
+  });
+  // res.render('Updateorder',orderId);
 
 });
 router.get('/PreeUpdateorder', function (req, res) {
   orderId = req.body.id;
+  orderId = req.body.id;
+
   res.render('Updateorder');
 
 });
-router.post('/UpdateOrder', function (req, res) {
+router.post('/UpdateOrder', async function (req, res) {
   var email = req.body.email;
   var liter = req.body.group2;
   var matireal = req.body.group8;
@@ -689,18 +804,8 @@ router.post('/UpdateOrder', function (req, res) {
   var cardExpiry = req.body.cardExpiry;
   var couponCode = req.body.couponCode;
   var ChangedAT = new Date();
-  ChangedAT.toDateString();
+  ChangedAT = ChangedAT.toLocaleString();
   var Address = req.body.Address;
-
-  // // Validation
-  // req.checkBody('name', 'Name is required').notEmpty();
-  // req.checkBody('email', 'Email is required').notEmpty();
-  // req.checkBody('email', 'Email is not valid').isEmail();
-  // req.checkBody('username', 'Username is required').notEmpty();
-  // req.checkBody('password', 'Password is required').notEmpty();
-  // req.checkBody('password1', 'Passwords do not match').equals(req.body.password);
-
-  // var errors = req.validationErrors();
 
 
   var options = {
@@ -728,6 +833,36 @@ router.post('/UpdateOrder', function (req, res) {
       Address: Address
     }
   };
+  var options1 = {
+    database: 'beer',
+    collection: 'orders',
+    id: req.body.orderid
+  };
+
+  var oldOrder = await msg(options1);
+  let x = {
+    ...options.updateObject,
+    ...oldOrder.data
+  };
+  x.Date = new Date().toLocaleString();
+
+  for (const key in options.updateObject) {
+    if (options.updateObject[key] == undefined) {
+      options.updateObject[key] = "";
+    }
+    if (undefined == oldOrder.data[key]) {
+      oldOrder.data[key] = "";
+    }
+
+    if (options.updateObject[key] == "") {
+      options.updateObject[key] = oldOrder.data[key];
+
+    }
+  }
+
+
+  options.updateObject.Date = new Date().toLocaleString();
+
   order.HashOrder(options);
   setTimeout(function () {
     if (options.id == undefined) {
@@ -736,21 +871,70 @@ router.post('/UpdateOrder', function (req, res) {
     } else {
       mLab.updateDocument(options)
         .then(function (response) {
-          res.redirect('/admin');
+          if (isAdmin(req)) {
+            res.redirect('/admin');
+          } else {
+            res.redirect('/users/UserMainPage');
 
+          }
         })
         .catch(function (error) {
           console.log('error', error);
-
+          req.flash('error', error);
+          res.redirect('/users/UserMainPage');
 
         });
     }
-
-
   }, 10000);
-
-
 });
 
+router.post('/sendNewBlogFORall', function (req, res) {
+
+  //get all blogs to the var blogs
+  var options = {
+    database: 'beer', //optional 
+    collection: 'blogs'
+  };
+
+  mLab.listDocuments(options)
+    .then(function (response) {
+      var whatTOsend = {
+        text: req.body.title, //"new  title ",
+        html: req.body.text
+      }
+      blogs = response.data;
+
+      Object.keys(response.data).forEach(function (email) {
+
+        console.log(email, response.data[email].email);
+        sendMail(response.data[email].email, whatTOsend);
+      });
+
+    })
+    .catch(function (error) {
+      console.log('error', error)
+    });
+
+  // req.flash.
+  res.redirect('/users/admin/hompage');
+});
+
+
+
+
+function sendTempData() {
+  setInterval(() => {
+    var i = 0;
+    var newTemp = {
+      TEMP: Math.floor((Math.random() * 80) + 10),
+      date: new Date().toLocaleString(),
+    };
+    TEMP.createTEMP(newTemp, function (err, newTemp) {
+      if (err) throw err;
+      console.log("Number + " + i + "==>   ", newTemp);
+    });
+
+  }, 1000);
+}
 
 module.exports = router;

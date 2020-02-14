@@ -104,11 +104,15 @@ router.get('/login', function (req, res) {
 
 // Register--// http://localhost:3000/user/register
 router.get('/register', function (req, res) {
+  
   res.render('register');
 });
 
 // Register User/ http://localhost:3000/user/register   send to DB 
 router.post('/register', function (req, res) {
+  if (req.isUnauthenticated()) {
+    res.redirect('./')
+  }
   var name = req.body.name;
   var LastName = req.body.LastName;
   var username = req.body.username;
@@ -207,6 +211,9 @@ passport.use(new LocalStrategy(
   }));
 //get to uesr homepage  include order infoo    need to connect order to the user than disp the order by user
 router.get('/UserMainPage', function (req, res) {
+  if (req.isUnauthenticated()) {
+    res.redirect('./')
+  }
   //get all orders to the var orders
   var orders = '',
     user, Dateshort;
@@ -233,7 +240,7 @@ router.get('/UserMainPage', function (req, res) {
   mLab.listDocuments(options)
     .then(function (response) {
       orders = response.data
-      console.log('orders', orders);
+      // console.log('orders', orders);
       for (let index = 0; index < orders.length; index++) {
         Dateshort = orders[index].Date.split("GMT");
         orders[index].Date = Dateshort[0];
@@ -262,7 +269,8 @@ router.get('/UserMainPage', function (req, res) {
   // });
   setTimeout(function () {
     res.render('UserMainPage', {
-      allOrders: orders
+      allOrders: orders,
+//lasDate:orders[0].Date
     });
 
 
