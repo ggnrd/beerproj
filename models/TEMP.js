@@ -12,12 +12,9 @@ var TEMPSchema = mongoose.Schema({
 
 var TEMP = module.exports = mongoose.model('TEMP', TEMPSchema);
 
-
 module.exports.createTEMP = function(TEMP, callback){
 		TEMP.save(callback);
 }
-
-
 
 module.exports.getTEMPById = function(id, callback){
 	TEMP.findById(id, callback);

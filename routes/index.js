@@ -172,7 +172,7 @@ var userId = "";
 var BlogId = "";
 var orderId = "";
 
-//return true if this is the admin j
+//return true if this is the admin 
 function isAdmin(req) {
   //cookie chack 
   try {
