@@ -25,7 +25,7 @@
     "mlab-data-api": "^0.2.2",
     "mongodb": "*",
     "mongoose": "4.1.9",
-    "nodemailer": "^2.7.2",
+    "nodemailer": "^6.4.16",
     "passport": "*",
     "passport-http": "*",
     "passport-local": "*",
